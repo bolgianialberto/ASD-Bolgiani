@@ -1,2 +1,2 @@
 # ASD-Bolgiani
-ALgorithms and Data Structures university project
+Algorithms and Data Structures university project
