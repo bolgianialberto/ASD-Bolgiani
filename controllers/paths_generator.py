@@ -109,8 +109,7 @@ def get_next_best_vertex(possible_vertices, goal):
     
     # Order the vertices by distance
     sorted_vertices = sorted(distances, key=lambda x: x[2])
-    print("Sorted vertices:", sorted_vertices[0])
-
+    
     vertex, weight, _ = sorted_vertices[0]
     # Select the closest vertex
     return vertex, weight
