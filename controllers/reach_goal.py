@@ -35,8 +35,6 @@ def reach_goal(instance):
     heapq.heappush(open, init_node)
             
     while open:
-        previous_node = current_node
-
         # Get the vertex with the lowest f
         current_node = heapq.heappop(open)
 
@@ -91,17 +89,6 @@ def diagonal_distance(v, goal):
     D = 1  
     D2 = math.sqrt(2) 
     return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
-
-def get_lowest_f(f, open):
-    lowest = math.inf
-    vertex = None
-    instant = None
-    for v, t in open:
-        if f[(v, t)] < lowest:
-            lowest = f[(v, t)]
-            vertex = v
-            instant = t
-    return vertex, instant
 
 def reconstruct_path(goal):
     path = []
