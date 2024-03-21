@@ -3,11 +3,12 @@ from controllers.instance_generator import instance_generator
 from controllers.reach_goal import reach_goal
 import argparse
 
-ROWS = 30
-COLS = 30
-TRAVERSABILITY = 0.9
-CLUSTER_FACTOR = 0.1
-N_AGENTS = 2
+ROWS = 3
+COLS = 3
+TRAVERSABILITY = 0.5
+CLUSTER_FACTOR = 0.0
+N_AGENTS = 1
+# TODO: se ci sono troppi agenti iniziali, informo che erano troppi e ne tolgo alcuni
 
 def main():
     parser = argparse.ArgumentParser()
@@ -41,6 +42,10 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents):
 
     # Print the instance
     instance.print()
+
+    if new_path is None:
+        print("No new path found")
+        return
 
     # Print the new path
     new_path.print()

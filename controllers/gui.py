@@ -9,8 +9,6 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (128, 128, 128)
 
-CELL_SIZE = 50
-
 WIDTH = 1000
 HEIGHT = 700
 
@@ -33,7 +31,7 @@ class Gui():
         # Set up the display
         screen_width = WIDTH
         screen_height = HEIGHT 
-        screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+        screen = pygame.display.set_mode((screen_width, screen_height))
         pygame.display.set_caption("Instance GUI")
         screen.fill(WHITE)
 
@@ -54,6 +52,7 @@ class Gui():
                         add_agents_button_clicked = False
 
                         self.instance = instance_generator(rows, cols, traversability, cluster_factor, n_agents)
+                        self.instance.print()
                         grid = self.instance.get_grid() 
                         print_gui_grid(grid, screen)
 

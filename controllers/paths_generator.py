@@ -2,7 +2,7 @@ from models.path import Path
 import math
 import random
 
-def initial_paths_generator(graph, n_agents):
+def initial_paths_generator(graph, grid, n_agents):
     # paths will contain a list of paths
     paths = []
 
@@ -20,12 +20,53 @@ def initial_paths_generator(graph, n_agents):
         goals.append(g)
         goals_last_instant[g] = 0
 
+    # Check if the goals are reachable
+    # reachables is a list of couples (init, goal) that are reachable
+    reachables = check_reachability(graph, grid, initials, goals)
+
     # Create n paths
-    for _ in range(n_agents):
-        path = path_generator(graph, initials.pop(), goals.pop(), paths, goals_last_instant)
+    for initial, goal in reachables:
+        path = path_generator(graph, initial, goal, paths, goals_last_instant)
         paths.append(path)
     
     return paths
+
+def check_reachability(graph, grid, initials, goals):
+    grid_representation = grid.get_grid_representation()
+
+    # reachables is a list of couples (init, goal) that are reachable
+    reachables = []
+
+    # visited is a list of set of vertexes belonging to the same island
+    islands = []
+
+    # Get the linked vertexes
+    linked_vertexes = graph.get_linked_vertexes()
+
+    # Get the rows and the columns
+    rows = grid.get_rows()
+    cols = grid.get_cols()
+
+    def dfs(r, c, island):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid_representation[r][c] == "X" or (r, c) in island:
+            return
+        island.add((r, c))
+        for vertex in linked_vertexes[(r, c)]:
+            dfs(vertex[0][0], vertex[0][1], island)
+            
+    for r in range(rows):
+        for c in range(cols):
+            if grid_representation[r][c] == "." and all((r, c) not in island for island in islands):
+                island = set()
+                dfs(r, c, island)
+                islands.append(island)
+
+    for island in islands:
+        for initial, goal in zip(initials, goals):
+            if initial in island and goal in island:
+                reachables.append((initial, goal))
+    
+    return reachables
 
 def path_generator(graph, init, goal, previous_paths, goals_last_instant):
     # Initialize the path
@@ -64,14 +105,18 @@ def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
 
     # Generate the sequence of moves
     while current_vertex != goal:
+        # TODO: Continuo a prendere il migliore anche se non posso? (ostacolo oppure goal irraggiungibile)
+
         # Get the next vertex and weight
-        next_vertex, weight = get_next_vertex(linked_vertexes, current_vertex, goal, instant)
+        next_vertex, weight = get_next_best_vertex(linked_vertexes, current_vertex, goal)
+        # next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
 
         # If the next_vertex is the goal, I have to check if it is passed by other paths after the last instant
         if next_vertex == goal:
             if goals_last_instant[goal] > instant:
                 while next_vertex == goal:
-                    next_vertex, weight = get_next_vertex(linked_vertexes, current_vertex, goal, instant)
+                    next_vertex, weight = get_next_best_vertex(linked_vertexes, current_vertex, goal)
+                    # next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
 
         # Check if there are conflicts
         if check_next_vertex(current_vertex, next_vertex, instant, previous_paths):
@@ -92,18 +137,14 @@ def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
 
     return sequence
 
-def get_next_vertex(linked_vertexes, current_vertex, goal, instant):
-    # random_next_vertex, weight_random_next_vertex = random.choice(linked_vertexes[tuple(current_vertex)])
-    # best_vertex, weight_best_vertex = get_next_best_vertex(linked_vertexes[tuple(current_vertex)], goal)
-
-    # if instant %2 == 0:
-    #     return random_next_vertex, weight_random_next_vertex
-
-    # return random.choice([(random_next_vertex, weight_random_next_vertex), (best_vertex, weight_best_vertex)])
-    return get_next_best_vertex(linked_vertexes[tuple(current_vertex)], goal)
+def get_next_random_vertex(linked_vertexes, current_vertex):
+    return random.choice(linked_vertexes[tuple(current_vertex)])
 
 
-def get_next_best_vertex(possible_vertices, goal):
+def get_next_best_vertex(linked_vertexes, current_vertex, goal):
+    # Get the possible vertices
+    possible_vertices = linked_vertexes[current_vertex]
+
     # Compute the distance between the possible vertices and the goal
     distances = [(vertex, weight, euclidean_distance(vertex, goal)) for vertex, weight in possible_vertices]
     

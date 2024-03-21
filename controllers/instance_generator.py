@@ -7,12 +7,12 @@ import random
 def instance_generator(rows, cols, traversability, cluster_factor, n_agents):
     # Create a grid
     grid = grid_generator(rows, cols, traversability, cluster_factor)
-
+    
     # Create a graph from the grid
     graph = graph_generator(grid)
 
     # Create a set of paths
-    paths = initial_paths_generator(graph, n_agents)
+    paths = initial_paths_generator(graph, grid, n_agents)
 
     # Create an initial state
     init = init_generator(graph, paths)

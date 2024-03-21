@@ -11,6 +11,9 @@ RED = (255, 0, 0)
 
 COLORS = [AQUA, GREEN, MAGENTA]
 
+# TODO: mettere la cell size solo in una parte
+CELL_SIZE = 20
+
 def print_gui_paths(paths, screen):
     # Draw the paths
     for path in paths:
@@ -18,7 +21,7 @@ def print_gui_paths(paths, screen):
         
         for vertex in path.get_sequence():
             row, col = vertex
-            rect = pygame.Rect(col * 20, row * 20, 20, 20)
+            rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
 
             pygame.draw.rect(screen, color, rect)
             pygame.draw.rect(screen, BLACK, rect, 1) 
@@ -29,7 +32,7 @@ def print_gui_path(path, screen):
     
     for vertex in path.get_sequence():
         row, col = vertex
-        rect = pygame.Rect(col * 20, row * 20, 20, 20)
+        rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
 
         pygame.draw.rect(screen, color, rect)
         pygame.draw.rect(screen, BLACK, rect, 1)
