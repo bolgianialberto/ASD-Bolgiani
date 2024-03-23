@@ -1,4 +1,5 @@
 from controllers.instance_generator import instance_generator
+from controllers.grid_generator import grid_generator
 from controllers.reach_goal import reach_goal
 from views.grid_visualization import print_gui_grid
 from views.path_visualization import print_gui_paths, print_gui_path
@@ -15,6 +16,7 @@ HEIGHT = 700
 class Gui():
     
     def __init__(self):
+        self.grid = None
         self.instance = None
         self.new_path = None
     
@@ -51,15 +53,18 @@ class Gui():
                         generate_button_clicked = True
                         add_agents_button_clicked = False
 
-                        self.instance = instance_generator(rows, cols, traversability, cluster_factor, n_agents)
-                        self.instance.print()
-                        grid = self.instance.get_grid() 
-                        print_gui_grid(grid, screen)
+                        self.grid = grid_generator(rows, cols, traversability, cluster_factor)
+                        # self.instance.print()
+                        print_gui_grid(self.grid, screen)
 
                     elif add_agents_button_rect.collidepoint(x, y) and generate_button_clicked and not add_agents_button_clicked:
                         add_agents_button_clicked = True
 
+                        self.instance = instance_generator(self.grid, n_agents)
                         paths = self.instance.get_paths()
+                        if not paths:
+                            messagebox.showinfo("Attention!", "No paths found! Please generate a new grid.")
+
                         print_gui_paths(paths, screen)
 
                     elif add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:

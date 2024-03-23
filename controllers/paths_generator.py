@@ -61,8 +61,9 @@ def check_reachability(graph, grid, initials, goals):
                 dfs(r, c, island)
                 islands.append(island)
 
-    for island in islands:
-        for initial, goal in zip(initials, goals):
+    
+    for initial, goal in zip(initials, goals):
+        for island in islands:
             if initial in island and goal in island:
                 reachables.append((initial, goal))
     
@@ -105,18 +106,24 @@ def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
 
     # Generate the sequence of moves
     while current_vertex != goal:
+        if instant > 5:
+            # TODO: sto provando a impostare un nuovo goal se continua a cercare senza trovare
+            path.set_goal(current_vertex)
+            goals_last_instant[current_vertex] = instant-1
+            del goals_last_instant[goal]
+            break
         # TODO: Continuo a prendere il migliore anche se non posso? (ostacolo oppure goal irraggiungibile)
 
         # Get the next vertex and weight
-        next_vertex, weight = get_next_best_vertex(linked_vertexes, current_vertex, goal)
-        # next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
-
+        
+        next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
+        
         # If the next_vertex is the goal, I have to check if it is passed by other paths after the last instant
         if next_vertex == goal:
             if goals_last_instant[goal] > instant:
                 while next_vertex == goal:
-                    next_vertex, weight = get_next_best_vertex(linked_vertexes, current_vertex, goal)
-                    # next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
+                    # next_vertex, weight = get_next_best_vertex(linked_vertexes, current_vertex, goal)
+                    next_vertex, weight = get_next_random_vertex(linked_vertexes, current_vertex)
 
         # Check if there are conflicts
         if check_next_vertex(current_vertex, next_vertex, instant, previous_paths):

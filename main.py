@@ -1,14 +1,14 @@
 from controllers.gui import Gui
 from controllers.instance_generator import instance_generator
+from controllers.grid_generator import grid_generator
 from controllers.reach_goal import reach_goal
 import argparse
 
-ROWS = 3
-COLS = 3
-TRAVERSABILITY = 0.5
-CLUSTER_FACTOR = 0.0
-N_AGENTS = 1
-# TODO: se ci sono troppi agenti iniziali, informo che erano troppi e ne tolgo alcuni
+ROWS = 15
+COLS = 15
+TRAVERSABILITY = 0.4
+CLUSTER_FACTOR = 0.1
+N_AGENTS = 3
 
 def main():
     parser = argparse.ArgumentParser()
@@ -26,28 +26,31 @@ def main():
     traversability = args.fcr or TRAVERSABILITY
     cluster_factor = args.cf or CLUSTER_FACTOR
     n_agents = args.n_a or N_AGENTS
-
-    if args.mode == 'cli':
-        cli_command(rows, cols, traversability, cluster_factor, n_agents)
         
-    elif args.mode == 'gui':
+    if args.mode == 'gui':
         gui_command(rows, cols, traversability, cluster_factor, n_agents)
+    else:
+        cli_command(rows, cols, traversability, cluster_factor, n_agents)
 
 def cli_command(rows, cols, traversability, cluster_factor, n_agents):
+    # Create a grid
+    grid = grid_generator(rows, cols, traversability, cluster_factor)
+    grid.print()
+
     # Create an instance
-    instance = instance_generator(rows, cols, traversability, cluster_factor, n_agents)
+    instance = instance_generator(grid, n_agents)
+    instance.print()
 
     # Add a new path
     new_path = reach_goal(instance)
-
-    # Print the instance
-    instance.print()
-
+    
     if new_path is None:
         print("No new path found")
         return
 
     # Print the new path
+    print()
+    print("New path")
     new_path.print()
 
 def gui_command(rows, cols, traversability, cluster_factor, n_agents):

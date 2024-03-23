@@ -56,11 +56,12 @@ def reach_goal(instance):
             return result_path
 
         if t < max:
+            print(t)
             # Get the neighbors of v
             neighbors = get_neighbors(v, linked_vertexes, t)
 
             for neighbor, weight in neighbors:
-                if neighbor not in closed:
+                if not belongs_to(neighbor, closed):
                     traversable = True
 
                     # Check if there are conflicts
@@ -75,9 +76,11 @@ def reach_goal(instance):
                             neighbor.set_f(neighbor.g + neighbor.h)
                             neighbor.set_parent(current_node)
                     
-                        if neighbor not in open:
+                        if not belongs_to(neighbor, open):
                             # Add (n, t+1) to Open
                             heapq.heappush(open, neighbor)
+        else:
+            break
     return None
 
 def compute_h(v, goal):
@@ -107,4 +110,10 @@ def get_neighbors(v, linked_vertexes, time):
         neighbors.append((new_node, w))
 
     return neighbors
+
+def belongs_to(node, list):
+    for n in list:
+        if node.x == n.x and node.y == n.y and node.time == n.time:
+            return True
+    return False
 

@@ -18,6 +18,9 @@ class Path:
     
     def get_goal(self):
         return self.goal
+    
+    def set_goal(self, goal):
+        self.goal = goal
 
     def get_weight(self):
         return self.weight
