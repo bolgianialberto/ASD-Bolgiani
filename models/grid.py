@@ -3,6 +3,7 @@ class Grid:
         self.rows = rows
         self.cols = cols
         self.obstacles = obstacles
+        self.grid_representation = self.create_grid_representation(rows, cols, obstacles)
 
     def get_rows(self):
         return self.rows
@@ -19,16 +20,26 @@ class Grid:
     def get_obstacles(self):
         return self.obstacles
     
+    def get_grid_representation(self):
+        return self.grid_representation
+    
+    def create_grid_representation(self, rows, cols, obstacles):
+        grid = []
+        for i in range(rows):
+            row = []
+            for j in range(cols):
+                if (i, j) in obstacles:
+                    row.append("X")
+                else:
+                    row.append(".")
+            grid.append(row)
+        return grid
+
     def print(self):
         print("Grid")
 
-        for i in range(self.rows):
-            for j in range(self.cols):
-                if (i, j) in self.obstacles:
-                    print("X", end=" ")
-                else:
-                    print(".", end=" ")
-            print()
+        for row in self.grid_representation:
+            print(" ".join(row))
         
     
 

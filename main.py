@@ -1,13 +1,15 @@
 from controllers.gui import Gui
 from controllers.instance_generator import instance_generator
-from controllers.reach_goal import reach_goal
+from controllers.grid_generator import grid_generator
+from algorithm.reach_goal import reach_goal
 import argparse
 
-ROWS = 30
-COLS = 30
-TRAVERSABILITY = 0.9
+ROWS = 15
+COLS = 15
+TRAVERSABILITY = 0.7
 CLUSTER_FACTOR = 0.1
-N_AGENTS = 2
+N_AGENTS = 3
+CELL_SIZE = 20
 
 def main():
     parser = argparse.ArgumentParser()
@@ -25,30 +27,37 @@ def main():
     traversability = args.fcr or TRAVERSABILITY
     cluster_factor = args.cf or CLUSTER_FACTOR
     n_agents = args.n_a or N_AGENTS
-
-    if args.mode == 'cli':
-        cli_command(rows, cols, traversability, cluster_factor, n_agents)
         
-    elif args.mode == 'gui':
-        gui_command(rows, cols, traversability, cluster_factor, n_agents)
+    if args.mode == 'gui':
+        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
+    else:
+        cli_command(rows, cols, traversability, cluster_factor, n_agents)
 
 def cli_command(rows, cols, traversability, cluster_factor, n_agents):
+    # Create a grid
+    grid = grid_generator(rows, cols, traversability, cluster_factor)
+    grid.print()
+
     # Create an instance
-    instance = instance_generator(rows, cols, traversability, cluster_factor, n_agents)
+    instance = instance_generator(grid, n_agents)
+    instance.print()
 
     # Add a new path
     new_path = reach_goal(instance)
-
-    # Print the instance
-    instance.print()
+    
+    if new_path is None:
+        print("No new path found")
+        return
 
     # Print the new path
+    print()
+    print("New path")
     new_path.print()
 
-def gui_command(rows, cols, traversability, cluster_factor, n_agents):
+def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size):
     # Create a GUI
     gui = Gui()
-    gui.run(rows, cols, traversability, cluster_factor, n_agents)
+    gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size)
 
 if __name__ == "__main__":
     main()

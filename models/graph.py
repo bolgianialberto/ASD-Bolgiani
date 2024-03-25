@@ -13,3 +13,6 @@ class Graph:
     
     def get_linked_vertexes(self):
         return self.linked_vertexes
+    
+    def get_neighbors(self, vertex):
+        return self.linked_vertexes[vertex]
