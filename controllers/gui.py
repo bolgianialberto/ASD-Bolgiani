@@ -1,6 +1,6 @@
 from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
-from controllers.reach_goal import reach_goal
+from algorithm.reach_goal import reach_goal
 from views.grid_visualization import print_gui_grid
 from views.path_visualization import print_gui_paths, print_gui_path
 import pygame
@@ -20,7 +20,7 @@ class Gui():
         self.instance = None
         self.new_path = None
     
-    def run(self, rows, cols, traversability, cluster_factor, n_agents):
+    def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size):
         global generate_button_clicked
         global add_agents_button_clicked
 
@@ -55,7 +55,7 @@ class Gui():
 
                         self.grid = grid_generator(rows, cols, traversability, cluster_factor)
                         # self.instance.print()
-                        print_gui_grid(self.grid, screen)
+                        print_gui_grid(self.grid, screen, cell_size)
 
                     elif add_agents_button_rect.collidepoint(x, y) and generate_button_clicked and not add_agents_button_clicked:
                         add_agents_button_clicked = True
@@ -65,13 +65,13 @@ class Gui():
                         if not paths:
                             messagebox.showinfo("Attention!", "No paths found! Please generate a new grid.")
 
-                        print_gui_paths(paths, screen)
+                        print_gui_paths(paths, screen, cell_size)
 
                     elif add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
                         self.new_path = reach_goal(self.instance)
 
                         if self.new_path:
-                            print_gui_path(self.new_path, screen)
+                            print_gui_path(self.new_path, screen, cell_size)
                         else:
                             messagebox.showinfo("Error", "Impossible to find a path!")
 

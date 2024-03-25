@@ -1,14 +1,15 @@
 from controllers.gui import Gui
 from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
-from controllers.reach_goal import reach_goal
+from algorithm.reach_goal import reach_goal
 import argparse
 
 ROWS = 15
 COLS = 15
-TRAVERSABILITY = 0.4
+TRAVERSABILITY = 0.7
 CLUSTER_FACTOR = 0.1
 N_AGENTS = 3
+CELL_SIZE = 20
 
 def main():
     parser = argparse.ArgumentParser()
@@ -28,7 +29,7 @@ def main():
     n_agents = args.n_a or N_AGENTS
         
     if args.mode == 'gui':
-        gui_command(rows, cols, traversability, cluster_factor, n_agents)
+        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
     else:
         cli_command(rows, cols, traversability, cluster_factor, n_agents)
 
@@ -53,10 +54,10 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents):
     print("New path")
     new_path.print()
 
-def gui_command(rows, cols, traversability, cluster_factor, n_agents):
+def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size):
     # Create a GUI
     gui = Gui()
-    gui.run(rows, cols, traversability, cluster_factor, n_agents)
+    gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size)
 
 if __name__ == "__main__":
     main()

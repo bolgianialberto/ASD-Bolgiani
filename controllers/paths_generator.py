@@ -106,7 +106,7 @@ def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
 
     # Generate the sequence of moves
     while current_vertex != goal:
-        if instant > 5:
+        if instant > 10:
             # TODO: sto provando a impostare un nuovo goal se continua a cercare senza trovare
             path.set_goal(current_vertex)
             goals_last_instant[current_vertex] = instant-1

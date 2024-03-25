@@ -4,8 +4,6 @@ from controllers.paths_generator import initial_paths_generator
 from models.instance import Instance
 import random
 
-random.seed(123)
-
 def instance_generator(grid, n_agents):
     # # Create a grid
     # grid = grid_generator(rows, cols, traversability, cluster_factor)

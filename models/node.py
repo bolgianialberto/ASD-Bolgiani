@@ -1,21 +1,23 @@
 import math
 
 class Node:
-    def __init__(self, x, y, time):
-        self.x = x
-        self.y = y
+    def __init__(self, vertex, time, parent, f, h, g = math.inf):
+        self.vertex = vertex
         self.time = time
 
-        self.parent = None
-        self.f = 0
-        self.h = 0
-        self.g = math.inf
+        self.parent = parent
+        self.f = f
+        self.h = h
+        self.g = g
     
     def set_f(self, f):
         self.f = f
 
     def set_h(self, h):
         self.h = h
+    
+    def get_h(self):
+        return self.h
 
     def set_g(self, g):
         self.g = g
