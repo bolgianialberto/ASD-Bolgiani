@@ -37,6 +37,19 @@ class Gui():
         self.new_path = None
     
     def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size):
+        pygame.init()
+
+        # display
+        screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("Path Finder")
+        screen.fill(WHITE)
+
+        button_surface = pygame.Surface((BUTTON_SURFACE_WIDTH, HEIGHT))
+        button_surface.fill(WHITE)
+        grid_surface = pygame.Surface((WIDTH - BUTTON_SURFACE_WIDTH, HEIGHT))
+        grid_surface.fill(WHITE)
+
+        # variables
         global generate_button_clicked
         global add_agents_button_clicked
 
@@ -55,50 +68,26 @@ class Gui():
         agglo_active = False
         na_active = False
 
+        # Input boxes
         rows_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP, BOX_WIDTH, BOX_HEIGHT)
         cols_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 30, BOX_WIDTH, BOX_HEIGHT)
         fcr_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 60, BOX_WIDTH, BOX_HEIGHT)
         agglo_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 90, BOX_WIDTH, BOX_HEIGHT)
-        na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 210, BOX_WIDTH, BOX_HEIGHT)
+        na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 240, BOX_WIDTH, BOX_HEIGHT)
+        checkbox_rg = Checkbox(button_surface, 140, 250, label="use reach goal")
     
-        # Initialize pygame
-        pygame.init()
-
-        # Set up the display
-        screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Path Finder")
-        screen.fill(WHITE)
-
-        button_surface = pygame.Surface((BUTTON_SURFACE_WIDTH, HEIGHT))
-        button_surface.fill(WHITE)
-        grid_surface = pygame.Surface((WIDTH - BUTTON_SURFACE_WIDTH, HEIGHT))
-        grid_surface.fill(WHITE)
-
         # Font
-        font = pygame.font.Font(CUSTOM_FONT, 15)
+        font_button = pygame.font.Font(CUSTOM_FONT, 20)
+        font_attributes = pygame.font.Font(CUSTOM_FONT, 15)
 
-        # generate button
+        # Buttons
         generate_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 120, BUTTON_WIDTH, BUTTON_HEIGHT)
-        pygame.draw.rect(button_surface, BLUE, generate_button_rect)
-        text = font.render("Generate", True, WHITE)
-        text_rect = text.get_rect(center=generate_button_rect.center)
-        button_surface.blit(text, text_rect)
+        add_agents_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 270, BUTTON_WIDTH, BUTTON_HEIGHT)
+        add_new_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 420, BUTTON_WIDTH, BUTTON_HEIGHT)
 
-        # add agents button
-        add_agents_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 240, BUTTON_WIDTH, BUTTON_HEIGHT)
-        pygame.draw.rect(button_surface, BLUE, add_agents_button_rect)
-        text = font.render("Add Agents", True, WHITE)
-        text_rect = text.get_rect(center=add_agents_button_rect.center)
-        button_surface.blit(text, text_rect)
-
-        checkbox_rg = Checkbox(button_surface, 140, 220, label="use reach goal")
-
-        # add new button
-        add_new_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 360, BUTTON_WIDTH, BUTTON_HEIGHT)
-        pygame.draw.rect(button_surface, BLUE, add_new_button_rect)
-        text = font.render("Add New", True, WHITE)
-        text_rect = text.get_rect(center=add_new_button_rect.center)
-        button_surface.blit(text, text_rect)
+        draw_button(button_surface, BLUE, font_button, "Generate", generate_button_rect)
+        draw_button(button_surface, BLUE, font_button, "Add Agents", add_agents_button_rect)
+        draw_button(button_surface, BLUE, font_button, "Add New", add_new_button_rect)
 
         # Main loop
         while True:
@@ -212,24 +201,24 @@ class Gui():
                             na_input_value += event.unicode
             
             color = LIGHT_BLUE if rows_active else LIGHT_GREY
-            draw_text("rows:", font, button_surface, PADDING_LEFT, PADDING_TOP)
-            draw_input_box(button_surface, color, font, rows_input_value, rows_input_box_rect)
+            draw_text("rows:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP)
+            draw_input_box(button_surface, color, font_attributes, rows_input_value, rows_input_box_rect)
             
             color = LIGHT_BLUE if cols_active else LIGHT_GREY
-            draw_text("cols:", font, button_surface, PADDING_LEFT, PADDING_TOP + 30)
-            draw_input_box(button_surface, color, font, cols_input_value, cols_input_box_rect) 
+            draw_text("cols:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 30)
+            draw_input_box(button_surface, color, font_attributes, cols_input_value, cols_input_box_rect) 
 
             color = LIGHT_BLUE if fcr_active else LIGHT_GREY
-            draw_text("free cell ratio:", font, button_surface, PADDING_LEFT, PADDING_TOP + 60)
-            draw_input_box(button_surface, color, font, fcr_input_value, fcr_input_box_rect)  
+            draw_text("free cell ratio:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 60)
+            draw_input_box(button_surface, color, font_attributes, fcr_input_value, fcr_input_box_rect)  
 
             color = LIGHT_BLUE if agglo_active else LIGHT_GREY
-            draw_text("cluster factor:", font, button_surface, PADDING_LEFT, PADDING_TOP + 90)
-            draw_input_box(button_surface, color, font, agglo_input_value, agglo_input_box_rect)
+            draw_text("cluster factor:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 90)
+            draw_input_box(button_surface, color, font_attributes, agglo_input_value, agglo_input_box_rect)
 
             color = LIGHT_BLUE if na_active else LIGHT_GREY
-            draw_text("n° of agents:", font, button_surface, PADDING_LEFT, PADDING_TOP + 210)
-            draw_input_box(button_surface, color, font, na_input_value, na_input_box_rect)
+            draw_text("n° of agents:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 240)
+            draw_input_box(button_surface, color, font_attributes, na_input_value, na_input_box_rect)
 
             screen.blit(button_surface, (0, 0))  # Posiziona la superficie dei bottoni a sinistra
             screen.blit(grid_surface, (BUTTON_SURFACE_WIDTH, 0))
@@ -237,9 +226,17 @@ class Gui():
             checkbox_rg.draw()
 
             pygame.display.flip()
-                        
+
+def draw_button(layout, color, font, text, button_rect):
+    pygame.draw.rect(layout, color, button_rect)
+    pygame.draw.rect(layout, BLACK, button_rect, 1)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect(center=button_rect.center)
+    layout.blit(text_surface, text_rect)
+
 def draw_input_box(layout, color, font, input_value, input_rect):
     pygame.draw.rect(layout, color, input_rect)
+    pygame.draw.rect(layout, BLACK, input_rect, 1)
     text_surface = font.render(input_value, True, BLACK)
     layout.blit(text_surface, (input_rect.left + 1, input_rect.top + 1))
 
