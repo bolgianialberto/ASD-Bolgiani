@@ -1,5 +1,4 @@
 import heapq
-from controllers.paths_generator import check_next_vertex   
 from models.node import Node   
 from models.path import Path 
 from algorithm.heuristics import diagonal_distance
@@ -11,7 +10,7 @@ from algorithm.heuristics import diagonal_distance
 #TODO: ma lo controllo se i percorsi precedenti non vanno sul goal del nuovo path? (edit: si ci vanno)
 #TODO: ma il nuovo percorso inizia con gli altri???
 
-def reach_goal(graph, init, goal, paths, max = 0):
+def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
     if max == 0:
         max = max_generator(graph, paths)
 
@@ -36,12 +35,12 @@ def reach_goal(graph, init, goal, paths, max = 0):
         # Add (v, t) to Closed
         closed.add((v, t))
 
-        if v == goal:
+        if v == goal and t > goals_last_instant[goal]:
             goal_node = current_node
 
             # Create the path
             result_path = Path(init, goal)
-            result_path.set_sequence(reconstruct_path(goal_node))
+            result_path.set_sequence(reconstruct_path(goal_node, goals_last_instant))
             result_path.set_weight(goal_node.get_g())
 
             return result_path
@@ -80,7 +79,6 @@ def reach_goal(graph, init, goal, paths, max = 0):
 
 def max_generator(graph, paths):
     max = 0
-
     # Get the longest path
     for path in paths:
         if len(path.get_sequence()) > max:
@@ -95,14 +93,36 @@ def max_generator(graph, paths):
 def compute_h(v, goal):
     return diagonal_distance(v, goal)
 
-def reconstruct_path(goal):
+def reconstruct_path(goal, goals_last_instant):
     path = []
     current = goal
     while current.parent:
+        update_goals_last_instant(goals_last_instant, current.vertex, current.time)
         path.append(current.vertex)
         current = current.parent
     path.append(current.vertex)
 
+    Path.set_goal_last_instant(goals_last_instant)
+
     return path[::-1]
 
+def update_goals_last_instant(goals_last_instant, vertex, time):
+    if vertex in goals_last_instant:
+        goals_last_instant[vertex] = time
 
+# TODO: metterlo solo in una parte del codice e non anche in paths_generator.py
+def check_next_vertex(current_vertex, next_vertex, instant, previous_paths):
+    for previous in previous_paths:
+        previous_sequence = previous.get_sequence()
+
+        if instant < len(previous_sequence):
+            if next_vertex == previous_sequence[instant]:
+                return False
+            if previous_sequence[instant-1] == next_vertex and previous_sequence[instant] == current_vertex:
+                return False
+        else:
+            # if the next vertex is the goal of another path
+            if next_vertex == previous.get_goal():
+                return False
+    
+    return True

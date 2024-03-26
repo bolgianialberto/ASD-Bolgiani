@@ -3,6 +3,8 @@ from controllers.grid_generator import grid_generator
 from algorithm.reach_goal import reach_goal
 from views.grid_visualization import print_gui_grid
 from views.path_visualization import print_gui_paths, print_gui_path
+from views.checkbox import Checkbox
+from models.path import Path
 import pygame
 from tkinter import messagebox
 
@@ -58,7 +60,7 @@ class Gui():
         fcr_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 60, BOX_WIDTH, BOX_HEIGHT)
         agglo_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 90, BOX_WIDTH, BOX_HEIGHT)
         na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 210, BOX_WIDTH, BOX_HEIGHT)
-
+    
         # Initialize pygame
         pygame.init()
 
@@ -89,6 +91,8 @@ class Gui():
         text_rect = text.get_rect(center=add_agents_button_rect.center)
         button_surface.blit(text, text_rect)
 
+        checkbox_rg = Checkbox(button_surface, 140, 220, label="use reach goal")
+
         # add new button
         add_new_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 360, BUTTON_WIDTH, BUTTON_HEIGHT)
         pygame.draw.rect(button_surface, BLUE, add_new_button_rect)
@@ -102,6 +106,8 @@ class Gui():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     return
+                
+                checkbox_rg.handle_event(event)
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
@@ -155,10 +161,11 @@ class Gui():
 
                     if add_agents_button_rect.collidepoint(x, y) and generate_button_clicked and not add_agents_button_clicked:
                         add_agents_button_clicked = True
+                        use_reach_goal = checkbox_rg.checked
 
                         n_agents_I = int(na_input_value) if na_input_value else n_agents
 
-                        self.instance = instance_generator(self.grid, n_agents_I)
+                        self.instance = instance_generator(self.grid, n_agents_I, use_reach_goal)
                         paths = self.instance.get_paths()
                         if not paths:
                             messagebox.showinfo("Attention!", "No paths found! Please generate a new grid.")
@@ -166,7 +173,7 @@ class Gui():
                         print_gui_paths(paths, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
-                        self.new_path = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_max())
+                        self.new_path = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), Path.get_goal_last_instant(), self.instance.get_max())
 
                         if self.new_path:
                             print_gui_path(self.new_path, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
@@ -226,6 +233,8 @@ class Gui():
 
             screen.blit(button_surface, (0, 0))  # Posiziona la superficie dei bottoni a sinistra
             screen.blit(grid_surface, (BUTTON_SURFACE_WIDTH, 0))
+
+            checkbox_rg.draw()
 
             pygame.display.flip()
                         
