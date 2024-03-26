@@ -74,14 +74,14 @@ def path_generator(graph, init, goal, previous_paths, goals_last_instant):
     path = Path(init, goal)
 
     # Generate the sequence of moves
-    sequence = random_sequence_generator(graph, path, previous_paths, goals_last_instant)
+    sequence = sequence_generator(graph, path, previous_paths, goals_last_instant)
 
     # Set the sequence of moves to the path
     path.set_sequence(sequence)
 
     return path
 
-def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
+def sequence_generator(graph, path, previous_paths, goals_last_instant):
     # sequence will contain a list of moves
     sequence = []
 
@@ -146,21 +146,6 @@ def random_sequence_generator(graph, path, previous_paths, goals_last_instant):
 
 def get_next_random_vertex(linked_vertexes, current_vertex):
     return random.choice(linked_vertexes[tuple(current_vertex)])
-
-
-def get_next_best_vertex(linked_vertexes, current_vertex, goal):
-    # Get the possible vertices
-    possible_vertices = linked_vertexes[current_vertex]
-
-    # Compute the distance between the possible vertices and the goal
-    distances = [(vertex, weight, euclidean_distance(vertex, goal)) for vertex, weight in possible_vertices]
-    
-    # Order the vertices by distance
-    sorted_vertices = sorted(distances, key=lambda x: x[2])
-    
-    vertex, weight, _ = sorted_vertices[0]
-    # Select the closest vertex
-    return vertex, weight
 
 def euclidean_distance(vertex, goal):
     # Compute the Euclidian dinstance between two vertexes

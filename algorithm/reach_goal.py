@@ -8,12 +8,13 @@ from algorithm.heuristics import diagonal_distance
 # un vertice è composto da x e y (quindi va bene anche una tupla)
 # un nodo è composto da vertice, tempo, parent, f, h, g
 
-def reach_goal(instance):
-    graph = instance.get_graph()
-    paths = instance.get_paths()
-    init = instance.get_init()
-    goal = instance.get_goal()
-    max = instance.get_max()
+#TODO: ma lo controllo se i percorsi precedenti non vanno sul goal del nuovo path? (edit: si ci vanno)
+#TODO: ma il nuovo percorso inizia con gli altri???
+
+def reach_goal(graph, init, goal, paths, max = 0):
+    if max == 0:
+        max = max_generator(graph, paths)
+
     current_node = None
 
     open = []
@@ -76,6 +77,20 @@ def reach_goal(instance):
             break
     
     return None
+
+def max_generator(graph, paths):
+    max = 0
+
+    # Get the longest path
+    for path in paths:
+        if len(path.get_sequence()) > max:
+            max = len(path.get_sequence())
+
+    # Add the number of vertexes
+    max += len(graph.vertexes) 
+
+    return max
+
 
 def compute_h(v, goal):
     return diagonal_distance(v, goal)
