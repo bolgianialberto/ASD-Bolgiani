@@ -1,6 +1,8 @@
 from math import sqrt
 
 class Path:
+    goal_last_instant = None
+
     def __init__ (self, init, goal):
         self.init = init
         self.goal = goal
@@ -27,6 +29,12 @@ class Path:
     
     def set_weight(self, weight):
         self.weight = weight
+
+    def set_goal_last_instant(goal_last_instant):
+        Path.goal_last_instant = goal_last_instant
+    
+    def get_goal_last_instant():
+        return Path.goal_last_instant
 
     @staticmethod
     def get_nsew_moves():
