@@ -1,13 +1,10 @@
-from controllers.grid_generator import grid_generator
 from controllers.graph_generator import graph_generator
 from controllers.paths_generator import initial_paths_generator
 from models.instance import Instance
+from algorithm.reach_goal import max_generator
 import random
 
-def instance_generator(grid, n_agents):
-    # # Create a grid
-    # grid = grid_generator(rows, cols, traversability, cluster_factor)
-    
+def instance_generator(grid, n_agents):    
     # Create a graph from the grid
     graph = graph_generator(grid)
 
@@ -39,17 +36,4 @@ def goal_generator(graph, paths, init):
     while goal in [path.get_goal() for path in paths] or goal == init:
         goal = random.choice(graph.vertexes)
     return goal
-
-def max_generator(graph, paths):
-    max = 0
-
-    # Get the longest path
-    for path in paths:
-        if len(path.get_sequence()) > max:
-            max = len(path.get_sequence())
-
-    # Add the number of vertexes
-    max += len(graph.vertexes) 
-
-    return max
 
