@@ -159,6 +159,10 @@ class Gui():
                         if not paths:
                             messagebox.showinfo("Attention!", "No paths found! Please generate a new grid.")
 
+                        # stampaaaaaaaaaaaaaaaaaaaaaa
+                        for path in paths:
+                            print(path.get_sequence())
+
                         print_gui_paths(paths, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:

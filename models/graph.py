@@ -3,11 +3,6 @@ class Graph:
         self.vertexes = vertexes
         self.linked_vertexes = linked_vertexes
 
-    def print(self):
-        print("Graph")
-        for vertex in self.vertexes:
-            print(vertex, self.linked_vertexes[vertex])
-
     def get_vertexes(self):
         return self.vertexes
     
@@ -16,3 +11,10 @@ class Graph:
     
     def get_neighbors(self, vertex):
         return self.linked_vertexes[vertex]
+    
+    def __str__(self):
+        res = "Graph\n"
+        for vertex in self.vertexes:
+            res += "(" + str(vertex[0]) + ", " + str(vertex[1]) + ")" + " " + str(self.linked_vertexes[vertex]) + "\n"
+        
+        return res

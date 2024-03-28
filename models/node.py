@@ -30,3 +30,6 @@ class Node:
 
     def __lt__(self, other):
         return self.f < other.f
+
+    def __str__(self):
+        return "Node: " + self.vertex + " Time: " + str(self.time) + " F: " + str(self.f) + " H: " + str(self.h) + " G: " + str(self.g) + " Parent: " + str(self.parent)

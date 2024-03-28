@@ -73,3 +73,11 @@ class Path:
         print("Sequence:")
         for instant, move in enumerate(self.sequence):
             print(f"Instant {instant}: {move}")
+
+    def __str__(self):
+        res = "Path\n"
+        res += "Init: " + str(self.init) + "\n"
+        res += "Goal: " + str(self.goal) + "\n"
+        res += "Weight: " + str(self.weight) + "\n"
+        res += "Sequence: " + str(self.sequence) + "\n"
+        return res

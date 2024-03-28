@@ -11,6 +11,7 @@ from algorithm.heuristics import diagonal_distance
 #TODO: ma il nuovo percorso inizia con gli altri???
 
 def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
+    # Used when reach_goal mode is activated for the previous paths generation
     if max == 0:
         max = max_generator(graph, paths)
 
@@ -25,14 +26,11 @@ def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
     heapq.heappush(open, nodeDict[(init, 0)])
             
     while open:
-        # Get the vertex with the lowest f
         current_node = heapq.heappop(open)
 
-        # Get the vertex and the instant
         v = current_node.vertex
         t = current_node.time
        
-        # Add (v, t) to Closed
         closed.add((v, t))
 
         if v == goal and t > goals_last_instant[goal]:

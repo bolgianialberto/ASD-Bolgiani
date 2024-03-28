@@ -1,6 +1,7 @@
 from models.path import Path
 from algorithm.reach_goal import reach_goal
 import random
+from collections import deque
 
 def initial_paths_generator(graph, grid, initials, goals, goals_last_instant, use_reach_goal = False):
     # paths will contain a list of paths
@@ -102,37 +103,44 @@ def check_next_vertex(current_vertex, next_vertex, instant, previous_paths):
 
 def check_reachability(graph, grid, initials, goals):
     grid_representation = grid.get_grid_representation()
-
-    # reachables is a list of couples (init, goal) that are reachable
-    reachables = []
-
-    # visited is a list of set of vertexes belonging to the same island
-    islands = []
-
-    # Get the linked vertexes
     linked_vertexes = graph.get_linked_vertexes()
-
-    # Get the rows and the columns
     rows = grid.get_rows()
     cols = grid.get_cols()
 
-    def dfs(r, c, island):
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid_representation[r][c] == "X" or (r, c) in island:
-            return
-        island.add((r, c))
-        for vertex in linked_vertexes[(r, c)]:
-            dfs(vertex[0][0], vertex[0][1], island)
-            
-    for r in range(rows):
-        for c in range(cols):
-            if grid_representation[r][c] == "." and all((r, c) not in island for island in islands):
-                island = set()
-                dfs(r, c, island)
-                islands.append(island)
+    # Find islands using BFS
+    def find_islands():
+        visited = set()
+        islands = []
+        for r in range(rows):
+            for c in range(cols):
+                if grid_representation[r][c] == "." and (r, c) not in visited:
+                    island = set()
+                    queue = deque([(r, c)])
+                    while queue:
+                        node_r, node_c = queue.popleft()
+                        if (node_r, node_c) in visited:
+                            continue
+                        visited.add((node_r, node_c))
+                        island.add((node_r, node_c))
+                        for neighbor in linked_vertexes[(node_r, node_c)]:
+                            queue.append(neighbor[0])
+                    islands.append(island)
+        return islands
 
+    islands = find_islands()
+
+    # Build a map from points to islands
+    point_to_island = {}
+    for i, island in enumerate(islands):
+        for point in island:
+            point_to_island[point] = i
+
+    # Check reachability
+    reachables = []
     for initial, goal in zip(initials, goals):
-        for island in islands:
-            if initial in island and goal in island:
-                reachables.append((initial, goal))
-    
+        initial_island = point_to_island.get(initial)
+        goal_island = point_to_island.get(goal)
+        if initial_island is not None and goal_island is not None and initial_island == goal_island:
+            reachables.append((initial, goal))
+
     return reachables

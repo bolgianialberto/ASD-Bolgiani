@@ -35,11 +35,11 @@ class Grid:
             grid.append(row)
         return grid
 
-    def print(self):
-        print("Grid")
-
+    def __str__(self):
+        res = "Grid\n"
         for row in self.grid_representation:
-            print(" ".join(row))
+            res += " ".join(row) + "\n"
+        return res
         
     
 
