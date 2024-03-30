@@ -36,6 +36,12 @@ class Path:
     def get_goal_last_instant():
         return Path.goal_last_instant
 
+    def check_next_same_position(self, next, instant, other):
+        return next == other.get_sequence()[instant]
+    
+    def check_postion_exchange(self, current, next, instant, other):
+        return current == other.get_sequence()[instant] and next == other.get_sequence()[instant-1]
+
     @staticmethod
     def get_nsew_moves():
         return [(0, 1), (0, -1), (1, 0), (-1, 0)]

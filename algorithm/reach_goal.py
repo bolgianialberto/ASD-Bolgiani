@@ -1,6 +1,7 @@
 import heapq
 from models.node import Node   
 from models.path import Path 
+from algorithm.reconstruct_path import reconstruct_path
 from algorithm.heuristics import diagonal_distance
 
 # mi serve un dizionario dove salvare i nodi già creati (vertice, tempo) -> nodo
@@ -10,10 +11,10 @@ from algorithm.heuristics import diagonal_distance
 #TODO: ma lo controllo se i percorsi precedenti non vanno sul goal del nuovo path? (edit: si ci vanno)
 #TODO: ma il nuovo percorso inizia con gli altri???
 
-def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
+def reach_goal(graph, init, goal, paths, goals_last_instant, max_length = 0):
     # Used when reach_goal mode is activated for the previous paths generation
-    if max == 0:
-        max = max_generator(graph, paths)
+    if max_length == 0:
+        max_length = max_generator(graph, paths)
 
     current_node = None
 
@@ -35,15 +36,9 @@ def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
 
         if v == goal and t > goals_last_instant[goal]:
             goal_node = current_node
+            return reconstruct_path(init, goal_node, goals_last_instant), nodeDict, closed
 
-            # Create the path
-            result_path = Path(init, goal)
-            result_path.set_sequence(reconstruct_path(goal_node, goals_last_instant))
-            result_path.set_weight(goal_node.get_g())
-
-            return result_path
-
-        if t < max:
+        if t < max_length:
             # Get the neighbors of v
             neighbors = graph.get_neighbors(v)
 
@@ -73,40 +68,22 @@ def reach_goal(graph, init, goal, paths, goals_last_instant, max = 0):
         else:
             break
     
-    return None
+    return None, None, None
 
 def max_generator(graph, paths):
-    max = 0
+    max_length = 0
     # Get the longest path
     for path in paths:
-        if len(path.get_sequence()) > max:
-            max = len(path.get_sequence())
+        if len(path.get_sequence()) > max_length:
+            max_length = len(path.get_sequence())
 
     # Add the number of vertexes
-    max += len(graph.vertexes) 
+    max_length += len(graph.vertexes) 
 
-    return max
-
+    return max_length
 
 def compute_h(v, goal):
     return diagonal_distance(v, goal)
-
-def reconstruct_path(goal, goals_last_instant):
-    path = []
-    current = goal
-    while current.parent:
-        update_goals_last_instant(goals_last_instant, current.vertex, current.time)
-        path.append(current.vertex)
-        current = current.parent
-    path.append(current.vertex)
-
-    Path.set_goal_last_instant(goals_last_instant)
-
-    return path[::-1]
-
-def update_goals_last_instant(goals_last_instant, vertex, time):
-    if vertex in goals_last_instant:
-        goals_last_instant[vertex] = time
 
 # TODO: metterlo solo in una parte del codice e non anche in paths_generator.py
 def check_next_vertex(current_vertex, next_vertex, instant, previous_paths):

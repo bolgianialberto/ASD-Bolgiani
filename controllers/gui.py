@@ -144,9 +144,15 @@ class Gui():
                         cols_I = int(cols_input_value) if cols_input_value else cols
                         traversability_I = float(fcr_input_value) if fcr_input_value else traversability
                         cluster_factor_I = float(agglo_input_value) if agglo_input_value else cluster_factor
-                    
-                        self.grid = grid_generator(rows_I, cols_I, traversability_I, cluster_factor_I)
-                        print_gui_grid(self.grid, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
+
+
+                        if rows_I > 25 or cols_I > 28 or rows_I < 1 or cols_I < 1 or traversability_I < 0 or traversability_I > 1 or cluster_factor_I < 0 or cluster_factor_I > 1:
+                            messagebox.showinfo("Attention!", "Please insert valid values: \n- rows: 1-25 \n- cols: 1-28 \n- free cell ratio: 0-1 \n- cluster factor: 0-1")
+
+                            continue
+                        else:
+                            self.grid = grid_generator(rows_I, cols_I, traversability_I, cluster_factor_I)
+                            print_gui_grid(self.grid, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
 
                     if add_agents_button_rect.collidepoint(x, y) and generate_button_clicked and not add_agents_button_clicked:
                         add_agents_button_clicked = True
@@ -159,10 +165,6 @@ class Gui():
                         if not paths:
                             messagebox.showinfo("Attention!", "No paths found! Please generate a new grid.")
 
-                        # stampaaaaaaaaaaaaaaaaaaaaaa
-                        for path in paths:
-                            print(path.get_sequence())
-
                         print_gui_paths(paths, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
@@ -172,6 +174,7 @@ class Gui():
                             print_gui_path(self.new_path, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
                         else:
                             messagebox.showinfo("Error", "Impossible to find a path!")
+                        
                     
                 if event.type == pygame.KEYDOWN:
                     if rows_active:

@@ -20,7 +20,7 @@ def initial_paths_generator(graph, grid, initials, goals, goals_last_instant, us
 
 def path_generator(graph, init, goal, previous_paths, goals_last_instant, use_reach_goal = False):
     if use_reach_goal:
-        path = reach_goal(graph, init, goal, previous_paths, goals_last_instant)
+        path, _, _ = reach_goal(graph, init, goal, previous_paths, goals_last_instant)
 
     else:
         path = Path(init, goal)
