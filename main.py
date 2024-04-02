@@ -4,6 +4,7 @@ from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
 from algorithm.reach_goal import reach_goal
 from controllers.profile_generator import Profile
+from controllers.test_generator import Automated_test
 import argparse
 
 # TODO: wait
@@ -55,20 +56,26 @@ def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size)
     gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size)
 
 def main():
+    # set the default parameters
     set_default_parameters()
 
-    args = get_cli_args()
-    rows = args.rows or ROWS
-    cols = args.cols or COLS
-    traversability = args.fcr or TRAVERSABILITY
-    cluster_factor = args.cf or CLUSTER_FACTOR
-    n_agents = args.na or N_AGENTS
-    use_reach_goal = args.rg or USE_REACH_GOAL
+    # run the automated tests
+    automated_test = Automated_test(ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, USE_REACH_GOAL)
+    automated_test.run_tests(10, 250, 10)
+
+    # get the command line arguments
+    # args = get_cli_args()
+    # rows = args.rows or ROWS
+    # cols = args.cols or COLS
+    # traversability = args.fcr or TRAVERSABILITY
+    # cluster_factor = args.cf or CLUSTER_FACTOR
+    # n_agents = args.na or N_AGENTS
+    # use_reach_goal = args.rg or USE_REACH_GOAL
         
-    if args.mode == 'gui':
-        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
-    else:
-        cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal)
+    # if args.mode == 'gui':
+    #     gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
+    # else:
+    #     cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal)
     
 if __name__ == "__main__":
     main()

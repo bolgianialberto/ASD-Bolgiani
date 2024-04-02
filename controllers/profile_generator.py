@@ -80,7 +80,6 @@ class Profile():
             print(f"Open lenght: {len(self.nodeDict)}")
             print(f"Closed lenght: {len(self.closed)}")
             print(f"Wait moves: {self.wait_counter}")
-            print(f"Sequence: {self.new_path.get_sequence()}")
             print()
 
         print("Time and Memory:")
