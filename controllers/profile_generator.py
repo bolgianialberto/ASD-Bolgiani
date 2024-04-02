@@ -46,7 +46,7 @@ class Profile():
         print("Parameters:")
         print(f"rows: {self.rows}")
         print(f"cols: {self.cols}")
-        print(f"traversability: {self.traversability}")
+        print(f"free cell ratio: {self.traversability}")
         print(f"cluster factor: {self.cluster_factor}")
         print()
 

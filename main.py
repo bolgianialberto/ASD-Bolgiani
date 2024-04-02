@@ -6,6 +6,9 @@ from algorithm.reach_goal import reach_goal
 from controllers.profile_generator import Profile
 import argparse
 
+# TODO: wait
+# TODO: sperimentazioni con for 
+
 def get_cli_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", help="Mode can be 'cli' or 'gui'", nargs='?', default='cli')
