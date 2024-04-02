@@ -23,10 +23,10 @@ def get_cli_args():
 
 def set_default_parameters():
     global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 20
-    COLS = 20
+    ROWS = 10
+    COLS = 10
     TRAVERSABILITY = 0.5
-    CLUSTER_FACTOR = 0.0
+    CLUSTER_FACTOR = 0.5
     N_AGENTS = 3
     CELL_SIZE = 25
     USE_REACH_GOAL = False

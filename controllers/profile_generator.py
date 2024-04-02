@@ -17,6 +17,7 @@ class Profile():
 
         self.start_time = None
         self.total_time = None
+        self.wait_counter = None
 
         self.peak_memory = None
 
@@ -31,6 +32,13 @@ class Profile():
         tracemalloc.stop()
         self.peak_memory = mem[1]/1024/1024
 
+    def count_wait_moves(self, path):
+        wait_counter = 0
+        for i in range(1, len(path.get_sequence()) - 1):
+            if path.get_sequence()[i] == path.get_sequence()[i - 1]:
+                wait_counter += 1
+        return wait_counter
+
     def set_values(self, rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed):
         self.rows = rows
         self.cols = cols
@@ -38,9 +46,11 @@ class Profile():
         self.cluster_factor = cluster_factor
         self.use_reach_goal = use_reach_goal
         self.instance = instance
-        self.new_path = new_path
-        self.nodeDict = nodeDict
-        self.closed = closed
+        if new_path:
+            self.new_path = new_path
+            self.nodeDict = nodeDict
+            self.closed = closed
+            self.wait_counter = self.count_wait_moves(self.new_path)
 
     def print_profile(self):
         print("Parameters:")
@@ -69,6 +79,8 @@ class Profile():
             print(f"Lenght: {len(self.new_path.get_sequence())}")
             print(f"Open lenght: {len(self.nodeDict)}")
             print(f"Closed lenght: {len(self.closed)}")
+            print(f"Wait moves: {self.wait_counter}")
+            print(f"Sequence: {self.new_path.get_sequence()}")
             print()
 
         print("Time and Memory:")
