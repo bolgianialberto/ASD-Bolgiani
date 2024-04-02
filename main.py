@@ -24,10 +24,10 @@ def get_cli_args():
 
 def set_default_parameters():
     global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 10
-    COLS = 10
-    TRAVERSABILITY = 0.5
-    CLUSTER_FACTOR = 0.5
+    ROWS = 19
+    COLS = 19
+    TRAVERSABILITY = 0.7
+    CLUSTER_FACTOR = 0.2
     N_AGENTS = 3
     CELL_SIZE = 25
     USE_REACH_GOAL = False
@@ -60,22 +60,22 @@ def main():
     set_default_parameters()
 
     # run the automated tests
-    automated_test = Automated_test(ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, USE_REACH_GOAL)
-    automated_test.run_tests(10, 250, 10)
+    # automated_test = Automated_test(ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, USE_REACH_GOAL)
+    # automated_test.run_tests(10, 250, 10)
 
     # get the command line arguments
-    # args = get_cli_args()
-    # rows = args.rows or ROWS
-    # cols = args.cols or COLS
-    # traversability = args.fcr or TRAVERSABILITY
-    # cluster_factor = args.cf or CLUSTER_FACTOR
-    # n_agents = args.na or N_AGENTS
-    # use_reach_goal = args.rg or USE_REACH_GOAL
+    args = get_cli_args()
+    rows = args.rows or ROWS
+    cols = args.cols or COLS
+    traversability = args.fcr or TRAVERSABILITY
+    cluster_factor = args.cf or CLUSTER_FACTOR
+    n_agents = args.na or N_AGENTS
+    use_reach_goal = args.rg or USE_REACH_GOAL
         
-    # if args.mode == 'gui':
-    #     gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
-    # else:
-    #     cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal)
+    if args.mode == 'gui':
+        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
+    else:
+        cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal)
     
 if __name__ == "__main__":
     main()

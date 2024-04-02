@@ -5,19 +5,23 @@ from algorithm.reach_goal import max_generator
 import random
 from models.path import Path
 
+random.seed(0)
+
 def instance_generator(grid, n_agents, use_reach_goal):    
     # Create a graph
     graph = graph_generator(grid)
 
+    vertexes = list(graph.get_linked_vertexes().keys())
+
     # Create all the initials and goals
-    initials = random.sample(graph.vertexes, n_agents + 1)
+    initials = random.sample(vertexes, n_agents + 1)
     goals = []
     goals_last_instant = {}
 
     for initial in initials:
-        g = random.choice(graph.vertexes)
+        g = random.choice(vertexes)
         while g == initial or g in goals:
-            g = random.choice(graph.vertexes)
+            g = random.choice(vertexes)
         goals.append(g)
         goals_last_instant[g] = 0
         

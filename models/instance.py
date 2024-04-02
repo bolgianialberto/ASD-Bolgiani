@@ -28,7 +28,6 @@ class Instance:
 
     def __str__(self):
         res = "Instance\n"
-        res += self.grid.__str__() + "\n"
         for path in self.paths:
             res += path.__str__() + "\n"
         res += "Init: " + "(" + str(self.init[0]) + ", " + str(self.init[1]) + ")" + "\n"

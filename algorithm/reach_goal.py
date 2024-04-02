@@ -78,7 +78,7 @@ def max_generator(graph, paths):
             max_length = len(path.get_sequence())
 
     # Add the number of vertexes
-    max_length += len(graph.vertexes) 
+    max_length += len(graph.get_linked_vertexes()) 
 
     return max_length
 

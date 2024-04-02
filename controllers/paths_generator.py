@@ -5,7 +5,7 @@ from collections import deque
 
 def initial_paths_generator(graph, grid, initials, goals, goals_last_instant, use_reach_goal = False):
     # paths will contain a list of paths
-    paths = []
+    paths = set()
 
     # reachables is a list of couples (init, goal) that are reachable
     reachables = check_reachability(graph, grid, initials, goals)
@@ -13,7 +13,7 @@ def initial_paths_generator(graph, grid, initials, goals, goals_last_instant, us
     # Create n paths
     for initial, goal in reachables:
         path = path_generator(graph, initial, goal, paths, goals_last_instant, use_reach_goal)
-        paths.append(path)
+        paths.add(path)
     
     Path.set_goal_last_instant(goals_last_instant)
     return paths
@@ -101,8 +101,25 @@ def check_next_vertex(current_vertex, next_vertex, instant, previous_paths):
     
     return True
 
+def create_grid_representation(grid):
+    rows = grid.get_rows()
+    cols = grid.get_cols()
+    obstacles = grid.get_obstacles()
+
+    grid_representation = []
+    for i in range(rows):
+        row = []
+        for j in range(cols):
+            if (i, j) in obstacles:
+                row.append("X")
+            else:
+                row.append(".")
+        grid_representation.append(row)
+
+    return grid_representation
+
 def check_reachability(graph, grid, initials, goals):
-    grid_representation = grid.get_grid_representation()
+    grid_representation = create_grid_representation(grid)
     linked_vertexes = graph.get_linked_vertexes()
     rows = grid.get_rows()
     cols = grid.get_cols()

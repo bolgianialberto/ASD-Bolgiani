@@ -83,7 +83,13 @@ class Profile():
             print()
 
         print("Time and Memory:")
-        print(f"total time: {self.total_time} seconds")
-        print(f"peak memory: {self.peak_memory} MB")
+        self.print_time()
+        self.print_memory()
+        self.print_memory()
 
+    def print_time(self):
+        print(f"total time: {self.total_time} seconds")
+
+    def print_memory(self):
+        print(f"total memory: {self.peak_memory} MB")
     
