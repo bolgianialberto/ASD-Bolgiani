@@ -5,8 +5,6 @@ from algorithm.reach_goal import max_generator
 import random
 from models.path import Path
 
-random.seed(0)
-
 def instance_generator(grid, n_agents, use_reach_goal):    
     # Create a graph
     graph = graph_generator(grid)
