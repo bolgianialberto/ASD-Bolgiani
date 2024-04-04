@@ -1,23 +1,14 @@
 from models.path import Path
 
-def reconstruct_path(init, goal_node, goals_last_instant):
+def reconstruct_path(init, goal_node, t_end):
     result_path = Path(init, goal_node.vertex)
     result_path.set_weight(goal_node.get_g())
 
-    sequence = []
     current = goal_node
     while current.parent:
-        update_goals_last_instant(goals_last_instant, current.vertex, current.time)
-        sequence.append(current.vertex)
+        result_path.add_node(t_end, current.vertex)
         current = current.parent
-    sequence.append(current.vertex)
-
-    Path.set_goal_last_instant(goals_last_instant)
-
-    result_path.set_sequence(sequence[::-1])
+        t_end -= 1
+    result_path.add_node(t_end, current.vertex)
     
     return result_path
-
-def update_goals_last_instant(goals_last_instant, vertex, time):
-    if vertex in goals_last_instant:
-        goals_last_instant[vertex] = time

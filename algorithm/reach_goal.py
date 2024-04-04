@@ -11,7 +11,14 @@ from algorithm.heuristics import diagonal_distance
 #TODO: ma lo controllo se i percorsi precedenti non vanno sul goal del nuovo path? (edit: si ci vanno)
 #TODO: ma il nuovo percorso inizia con gli altri???
 
-def reach_goal(graph, init, goal, paths, goals_last_instant, max_length = 0):
+def reach_goal(instance):
+    graph = instance.get_graph()
+    init = instance.get_init()
+    goal = instance.get_goal()
+    paths = instance.get_paths()
+    time_new_goal_get_passed = instance.get_time_new_goal_get_passed()
+    max_length = instance.get_max()
+
     # Used when reach_goal mode is activated for the previous paths generation
     if max_length == 0:
         max_length = max_generator(graph, paths)
@@ -34,9 +41,9 @@ def reach_goal(graph, init, goal, paths, goals_last_instant, max_length = 0):
        
         closed.add((v, t))
 
-        if v == goal and t > goals_last_instant[goal]:
+        if v == goal and t > time_new_goal_get_passed:
             goal_node = current_node
-            return reconstruct_path(init, goal_node, goals_last_instant), nodeDict, closed
+            return reconstruct_path(init, goal_node, t), nodeDict, closed
 
         if t < max_length:
             # Get the neighbors of v

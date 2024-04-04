@@ -1,3 +1,4 @@
+from collections import defaultdict
 from controllers.graph_generator import graph_generator
 from controllers.paths_generator import initial_paths_generator
 from models.instance import Instance
@@ -7,40 +8,40 @@ from models.path import Path
 
 random.seed(0)
 
+def create_inits_goals(graph, n_agents):
+    vertexes = list(graph.get_linked_vertexes().keys())
+    goals_init_last_instant = defaultdict(tuple)
+    initials = []
+    
+    goals = set(random.sample(vertexes, n_agents + 1))
+    
+    for goal in goals:
+        init = random.choice(vertexes)
+        while init == goal:
+            init = random.choice(vertexes)
+        goals_init_last_instant[goal] = (init, -1)
+        initials.append(init)
+    
+    return goals_init_last_instant, initials
+        
+
 def instance_generator(grid, n_agents, use_reach_goal):    
     # Create a graph
     graph = graph_generator(grid)
-
-    vertexes = list(graph.get_linked_vertexes().keys())
-
-    # Create all the initials and goals
-    initials = random.sample(vertexes, n_agents + 1)
-    goals = []
-    goals_last_instant = {}
-
-    for initial in initials:
-        g = random.choice(vertexes)
-        while g == initial or g in goals:
-            g = random.choice(vertexes)
-        goals.append(g)
-        goals_last_instant[g] = 0
-        
-    Path.set_goal_last_instant(goals_last_instant)
-
+    
+    goal_init_last_instant, initials = create_inits_goals(graph, n_agents)
+    
     # Create a set of paths
-    paths = initial_paths_generator(graph, grid, initials[:-1], goals[:-1], goals_last_instant, use_reach_goal)
-
-    # Create an initial state
-    init = initials[-1]
-
-    # Create a goal state
-    goal = goals[-1]
+    paths = initial_paths_generator(graph, grid, goal_init_last_instant, initials, n_agents, use_reach_goal)
+    
+    # Get the initial and goal vertexes
+    goal, (init, time_new_goal_get_passed) = goal_init_last_instant.popitem()
 
     # Compute max
     max = max_generator(graph, paths)
 
     # Create an instance
-    instance = Instance(grid, graph, paths, init, goal, max)
+    instance = Instance(grid, graph, paths, init, goal, max, time_new_goal_get_passed)
 
     return instance
 

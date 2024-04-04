@@ -1,12 +1,13 @@
 class Instance:
     
-    def __init__(self, grid, graph, paths, init, goal, max):
+    def __init__(self, grid, graph, paths, init, goal, max, time_new_goal_get_passed):
         self.grid = grid
         self.graph = graph
         self.paths = paths
         self.init = init
         self.goal = goal
         self.max = max
+        self.time_new_goal_get_passed = time_new_goal_get_passed
     
     def get_grid(self):
         return self.grid
@@ -25,6 +26,9 @@ class Instance:
     
     def get_max(self):
         return self.max
+    
+    def get_time_new_goal_get_passed(self):
+        return self.time_new_goal_get_passed
 
     def __str__(self):
         res = "Instance\n"
