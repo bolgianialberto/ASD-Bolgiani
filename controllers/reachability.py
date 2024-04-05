@@ -1,5 +1,6 @@
 from collections import deque
 
+# TODO costa O(1) cercare nel set giusto?
 def check_reachability(islands, initial, goal):
     for island in islands:
             if (initial in island and goal not in island) or (initial not in island and goal in island):

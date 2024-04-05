@@ -8,21 +8,6 @@ class Path:
         self.weight = 0
         self.sequence = defaultdict(tuple)
 
-    def is_path_ended(self, t):
-        return t in self.sequence
-    
-    # has to wait se è arrivato al goal ma qualcuno passa per il goal dopo 
-    def has_to_wait(self, t, max_t):
-        return t < max_t
-    
-    # collisione con altri path -> allo stesso tempo hanno lo stesso nodo
-    def collide_at_same_time(self, t, path):
-        return self.sequence[t] == path.get_sequence()[t]
-
-    # incrocio con altri path -> al tempo t-1 uno è in a e l'altro in b e al tempo t uno è in b e l'altro in a
-
-    # passa su un goal -> al tempo t il percorso p è finito e il nodo è il goal di p
-
     def add_node(self, t, node, weight = 0):
         self.sequence[t] = node
         self.weight += weight
@@ -47,6 +32,34 @@ class Path:
     
     def set_weight(self, weight):
         self.weight = weight
+
+    def is_path_ended(self, t):
+        return t in self.sequence
+     
+    # collisione con altri path -> allo stesso tempo hanno lo stesso nodo
+    def collide_at_same_time(self, next_other,  t):
+        return self.sequence[t] == next_other
+
+    # incrocio con altri path -> al tempo t-1 uno è in a e l'altro in b e al tempo t uno è in b e l'altro in a
+    def collide_place_exchange(self, current_other, next_other, t):
+        return self.sequence[t-1] == next_other and self.sequence[t] == current_other
+
+    # passa su un goal -> al tempo t il percorso p è finito e il nodo è il goal di p
+    def is_collision_free(self, current, next, t):
+        return not self.collide_at_same_time(next, t) and not self.collide_place_exchange(current, next, t)
+
+    @staticmethod
+    def is_move_good(current, next, paths, t):
+        for path in paths:
+            if (path.is_path_ended(t) and current == path.get_goal()) or (not path.is_path_ended(t) and not path.is_collision_free(current, next, t)):
+                return False
+        
+        return True
+
+    @staticmethod
+    def remove_unreachable_moves(current, available_moves, paths, t):
+        # available_moves è un set di vicini di un nodo
+        available_moves = [next for next in available_moves if Path.is_move_good(current, next, paths, t)]
 
     @staticmethod
     def get_nsew_moves():
