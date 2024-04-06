@@ -24,11 +24,11 @@ def get_cli_args():
 
 def set_default_parameters():
     global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 10
-    COLS = 10
+    ROWS = 250
+    COLS = 250
     TRAVERSABILITY = 0.7
     CLUSTER_FACTOR = 0.2
-    N_AGENTS = 3
+    N_AGENTS = 25
     CELL_SIZE = 25
     USE_REACH_GOAL = False
 
@@ -39,13 +39,12 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     grid = grid_generator(rows, cols, traversability, cluster_factor)
     
     instance = instance_generator(grid, n_agents, use_reach_goal)
-    print(instance)
     
-    new_path, nodeDict, closed = reach_goal(instance)
+    # new_path, nodeDict, closed = reach_goal(instance)
     
-    profile.stop_screening()
+    # profile.stop_screening()
 
-    profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed)
+    # profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed)
 
     # profile.print_profile()
 

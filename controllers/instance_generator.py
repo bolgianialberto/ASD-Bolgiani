@@ -6,8 +6,6 @@ from algorithm.reach_goal import max_generator
 import random
 from models.path import Path
 
-random.seed(0)
-
 def create_inits_goals(graph, n_agents):
     vertexes = list(graph.get_linked_vertexes().keys())
     goals_init_last_instant = defaultdict(tuple)
@@ -32,9 +30,10 @@ def instance_generator(grid, n_agents, use_reach_goal):
     # Create a set of paths
     paths = initial_paths_generator(graph, grid, goal_init_last_instant, n_agents, use_reach_goal)
     
-    # # Get the initial and goal vertexes
-    # init, (goal, time_new_goal_get_passed) = goal_init_last_instant.popitem()
-
+    # Get the initial and goal vertexes
+    print(goal_init_last_instant)
+    init, (goal, time_new_goal_get_passed) = goal_init_last_instant.popitem()
+    print(init, goal, time_new_goal_get_passed)
     # # Compute max
     # max = max_generator(graph, paths)
 
@@ -42,6 +41,4 @@ def instance_generator(grid, n_agents, use_reach_goal):
     # instance = Instance(grid, graph, paths, init, goal, max, time_new_goal_get_passed)
 
     # return instance
-    for path in paths:
-        print(path)
 
