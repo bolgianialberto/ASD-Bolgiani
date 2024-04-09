@@ -6,7 +6,7 @@ class Path:
         self.init = init
         self.goal = goal
         self.weight = 0
-        self.sequence = defaultdict(tuple)
+        self.sequence = {}
 
     def add_node(self, t, node, weight = 0):
         self.sequence[t] = node
@@ -42,7 +42,9 @@ class Path:
 
     # incrocio con altri path -> al tempo t-1 uno è in a e l'altro in b e al tempo t uno è in b e l'altro in a
     def collide_place_exchange(self, current_other, next_other, t):
-        return self.sequence[t-1] == next_other and self.sequence[t] == current_other
+        if self.sequence.get(t-1, None) and self.sequence.get(t, None):
+            return self.sequence[t-1] == next_other and self.sequence[t] == current_other
+        return True
 
     # passa su un goal -> al tempo t il percorso p è finito e il nodo è il goal di p
     def is_collision_free(self, current, next, t):

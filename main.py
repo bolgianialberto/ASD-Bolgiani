@@ -4,7 +4,6 @@ from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
 from algorithm.reach_goal import reach_goal
 from controllers.profile_generator import Profile
-from controllers.test_generator import Automated_test
 import argparse
 
 # TODO: wait
@@ -24,13 +23,13 @@ def get_cli_args():
 
 def set_default_parameters():
     global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 5
-    COLS = 5
+    ROWS = 20
+    COLS = 20
     TRAVERSABILITY = 0.7
     CLUSTER_FACTOR = 0.2
-    N_AGENTS = 4
+    N_AGENTS = 2
     CELL_SIZE = 25
-    USE_REACH_GOAL = True
+    USE_REACH_GOAL = False
 
 def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal):
     profile = Profile()
@@ -40,14 +39,14 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     
     instance = instance_generator(grid, n_agents, use_reach_goal)
     
-    instance.print_instance()
-    # new_path, nodeDict, closed = reach_goal(instance)
+    new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_time_new_goal_get_passed(), instance.get_max())
     
-    # profile.stop_screening()
+    # stop screening
+    profile.stop_screening()
 
-    # profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed)
+    profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed)
 
-    # profile.print_profile()
+    profile.print_profile()
 
 def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size):
     gui = Gui()

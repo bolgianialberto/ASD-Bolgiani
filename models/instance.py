@@ -1,6 +1,6 @@
 class Instance:
     
-    def __init__(self, grid, graph, paths, init, goal, max, time_new_goal_get_passed):
+    def __init__(self, grid, graph, paths, init, goal, max, time_new_goal_get_passed, time_limit_agents):
         self.grid = grid
         self.graph = graph
         self.paths = paths
@@ -8,7 +8,11 @@ class Instance:
         self.goal = goal
         self.max = max
         self.time_new_goal_get_passed = time_new_goal_get_passed
+        self.time_limit_agents = time_limit_agents+1
     
+    def get_time_limit_agents(self):
+        return self.time_limit_agents
+
     def get_grid(self):
         return self.grid
     
