@@ -30,14 +30,13 @@ class Instance:
     def get_time_new_goal_get_passed(self):
         return self.time_new_goal_get_passed
 
-    def __str__(self):
-        res = "Instance\n"
+    def print_instance(self):
+        print("Instance")
         for path in self.paths:
-            res += path.__str__() + "\n"
-        res += "Init: " + "(" + str(self.init[0]) + ", " + str(self.init[1]) + ")" + "\n"
-        res += "Goal: " + "(" + str(self.goal[0]) + ", " + str(self.goal[1]) + ")" + "\n"
-        res += "Max: " + str(self.max) + "\n"
-        return res
+            path.print_path()
+        print("Init: " + str(self.init))
+        print("Goal: " + str(self.goal))
+        print("Max: " + str(self.max))
             
     
     

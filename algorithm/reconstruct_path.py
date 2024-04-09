@@ -5,10 +5,13 @@ def reconstruct_path(init, goal_node, t_end):
     result_path.set_weight(goal_node.get_g())
 
     current = goal_node
+    t = t_end
+
     while current.parent:
-        result_path.add_node(t_end, current.vertex)
+        result_path.add_node(t, current.vertex)
         current = current.parent
-        t_end -= 1
-    result_path.add_node(t_end, current.vertex)
+        t -= 1
+    
+    result_path.add_node(t, current.vertex)
     
     return result_path

@@ -29,9 +29,9 @@ def add_linked_vertexes(graph, grid):
                             graph.add_linked_vertex((r, c), new_vertex, get_weight(direction))
 
 def get_weight(direction):
-    if direction in nsew_directions:
-        return nsew_still_weight
+    if direction in diagonal_directions:
+        return diagonal_weight 
     else:
-        return diagonal_weight
+        return nsew_still_weight
                 
                 

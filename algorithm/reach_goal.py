@@ -1,6 +1,5 @@
 import heapq
 from models.node import Node   
-from models.path import Path 
 from algorithm.reconstruct_path import reconstruct_path
 from algorithm.heuristics import diagonal_distance
 

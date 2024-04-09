@@ -43,23 +43,25 @@ class Grid:
                 c = random.randint(0, self.cols-1)
 
             self.add_obstacle((r, c))
-
-
-
-    def get_grid_representation(self):
-        return self.grid_representation
     
-    def create_grid_representation(self, rows, cols, obstacles):
+
+    # TODO: togli questi due
+    def create_grid_representation(self):
         grid = []
-        for i in range(rows):
+        for i in range(self.rows):
             row = []
-            for j in range(cols):
-                if (i, j) in obstacles:
+            for j in range(self.cols):
+                if (i, j) in self.obstacles:
                     row.append("X")
                 else:
                     row.append(".")
             grid.append(row)
         return grid
+
+    def print_grid_representation(self):
+        grid = self.create_grid_representation()
+        for row in grid:
+            print(row)
 
     
         

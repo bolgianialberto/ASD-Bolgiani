@@ -1,8 +1,9 @@
 import random
 from models.path import Path
+from algorithm.new_reach_goal import reach_goal
 from controllers.reachability import check_reachability, find_islands
 
-TIME_LIMIT = 10
+TIME_LIMIT = 7
 
 def create_random_initial_paths(goals_init_last_instant, graph, grid):
     paths = set()
@@ -30,7 +31,7 @@ def create_random_initial_paths(goals_init_last_instant, graph, grid):
                 next, weight = random.choice(available_moves)
 
                 # TODO: cambia goals_init_last_instant[goal] ci va messo init credo
-                if next != goal or goals_init_last_instant[goal][1] < t:
+                if next != goal or goals_init_last_instant[init][1] < t:
                     path.add_node(t, next, weight)
                     current = next
                     t += 1
@@ -39,8 +40,20 @@ def create_random_initial_paths(goals_init_last_instant, graph, grid):
     
     return paths
 
-def initial_paths_generator(graph, grid, goals_init_last_instant, initials, n_agents, use_reach_goal = False):
-    if not use_reach_goal:
-        paths = create_random_initial_paths(goals_init_last_instant, graph, grid)
+def create_reach_goal_paths(goals_init_last_instant, graph):
+    paths = []
+
+    for init, (goal, time_goal_get_passed) in list(goals_init_last_instant.items())[:-1]:
+        path, _, _ = reach_goal(graph, init, goal, paths, time_goal_get_passed, TIME_LIMIT)
+        # TODO: perchèèèèè
+        if path:
+            paths.append(path) 
     
     return paths
+
+def initial_paths_generator(graph, grid, goals_init_last_instant, use_reach_goal = False):
+    if use_reach_goal:
+        return create_reach_goal_paths(goals_init_last_instant, graph)
+    else:
+        return create_random_initial_paths(goals_init_last_instant, graph, grid)
+

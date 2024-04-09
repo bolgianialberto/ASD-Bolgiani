@@ -51,7 +51,8 @@ class Path:
     @staticmethod
     def is_move_good(current, next, paths, t):
         for path in paths:
-            if (path.is_path_ended(t) and current == path.get_goal()) or (not path.is_path_ended(t) and not path.is_collision_free(current, next, t)):
+            ended = not path.is_path_ended(t)
+            if (ended and current == path.get_goal()) or (not ended and not path.is_collision_free(current, next, t)):
                 return False
         
         return True
@@ -93,10 +94,12 @@ class Path:
     def get_diagonal_weight():
         return sqrt(2)
 
-    def __str__(self):
-        res = "Path\n"
-        res += "Init: " + str(self.init) + "\n"
-        res += "Goal: " + str(self.goal) + "\n"
-        res += "Weight: " + str(self.weight) + "\n"
-        res += "Sequence: " + str(self.sequence) + "\n"
-        return res
+    def print_path(self):
+        print("Path")
+        print("Init: " + str(self.init))
+        print("Goal: " + str(self.goal))
+        print("Weight: " + str(self.weight))
+        t = 0
+        while t < len(self.sequence):
+            print(str(t) + ": " + str(self.sequence[t]))
+            t += 1
