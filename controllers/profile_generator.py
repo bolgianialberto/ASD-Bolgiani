@@ -53,37 +53,46 @@ class Profile():
             self.wait_counter = self.count_wait_moves(self.new_path)
 
     def print_profile(self):
-        print("Parameters:")
+        print("PARAMETERS:")
         print(f"rows: {self.rows}")
         print(f"cols: {self.cols}")
         print(f"free cell ratio: {self.traversability}")
         print(f"cluster factor: {self.cluster_factor}")
         print()
 
-        print("Instance:")
-        print(f"pre existing pahts use reach goal: {self.use_reach_goal}")
-        print(f"pre existing paths number: {len(self.instance.get_paths())}")
+        print("INSTANCE:")
+        print(f"agents use reach goal: {self.use_reach_goal}")
+        print(f"agents' number: {len(self.instance.get_paths())}")
+        print(f"agents' max length: {self.instance.get_time_limit_agents()}")
+
         for i, path in enumerate(self.instance.get_paths()):
-            print(f"path {i} lenght: {len(path.get_sequence())}")
+            print(f"length agent {i+1}:" , len(path.get_sequence()))
+            
         print()
 
         if not self.new_path:
             print("No new path found")
             print()
         else:
-            print("New Path:")
+            print("NEW PATH:")
             print(f"Init: {self.new_path.get_init()}")
             print(f"Goal: {self.new_path.get_goal()}")
             print(f"Weight: {self.new_path.get_weight()}")
-            print(f"Max lenght: {self.instance.get_max()}")
+            print(f"Max lenght: {self.instance.get_max()+1}")
             print(f"Lenght: {len(self.new_path.get_sequence())}")
             print(f"Open lenght: {len(self.nodeDict)}")
             print(f"Closed lenght: {len(self.closed)}")
             print(f"Wait moves: {self.wait_counter}")
+            print(f"Sequence: {self.new_path.get_sequence()}")
             print()
 
-        print("Time and Memory:")
-        print(f"total time: {self.total_time} seconds")
-        print(f"peak memory: {self.peak_memory} MB")
+        print("TIME AND MEMORY:")
+        self.print_time()
+        self.print_memory()
 
+    def print_time(self):
+        print(f"total time: {self.total_time} seconds")
+
+    def print_memory(self):
+        print(f"total memory: {self.peak_memory} MB")
     

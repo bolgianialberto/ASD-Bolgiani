@@ -1,53 +1,39 @@
+from math import floor
 import random
 from models.grid import Grid
 from models.path import Path
 
+nsew_directions = Path.get_nsew_moves()
+
 def grid_generator(rows, cols, traversability, cluster_factor):
-    # Define all cells
-    all_cells = [(i, j) for i in range(rows) for j in range(cols)]
+    grid = Grid(rows, cols)
 
-    # Create a list of obstacles
-    obstacles = create_obstacles(all_cells, traversability, cluster_factor)
-
-    # Create a grid
-    grid = Grid(rows, cols, obstacles)
+    add_obstacles(grid, traversability, cluster_factor)
 
     return grid
 
-def create_obstacles(all_cells, traversability, cluster_factor):
-    # Compute number of traversable cells
-    n_traversable = int(traversability * len(all_cells))
+def add_obstacles(grid, traversability, cluster_factor):
+    n_obstacles = int((1 - traversability) * grid.get_rows() * grid.get_cols())
 
-    # Compute number of obstacles
-    n_obstacles = len(all_cells) - n_traversable
+    if n_obstacles > 0:
+        n_cluster = int(cluster_factor * n_obstacles)
 
-    # Compute number of cells in a cluster
-    n_cluster = int(cluster_factor * n_obstacles)
+        if n_cluster > 0:
+            add_cluster(grid, n_cluster)
 
-    # At first create a cluster of obstacles
-    cluster = create_cluster(all_cells, n_cluster)
+        grid.add_random_obstacles(n_obstacles - n_cluster)
 
-    # Create a list of obstacles
-    obstacles = cluster + random.sample(set(all_cells) - set(cluster), n_obstacles - n_cluster)
-    
-    return obstacles
+def add_cluster(grid, n_cluster):
+    initial_r = random.randint(0, grid.get_rows() - 1)
+    initial_c = random.randint(0, grid.get_cols() - 1)
 
-def create_cluster(all_cells, n_cluster):
-    cluster = []
+    grid.add_obstacle((initial_r, initial_c))
 
-    nsew_directions = Path.get_nsew_moves()
+    while len(grid.get_obstacles()) < n_cluster:
+        (r, c) = random.choice(list(grid.get_obstacles()))
+        direction = random.choice(nsew_directions)
 
-    if n_cluster > 0:
-        cell = random.choice(all_cells)
-        n_cluster -= 1
-        cluster.append(cell)
-        
-        while n_cluster > 0:
-            cell = random.choice(cluster)
-            dir = random.choice(nsew_directions)
-            new_vertex = (cell[0] + dir[0], cell[1] + dir[1])
-            if new_vertex in all_cells and new_vertex not in cluster:
-                cluster.append(new_vertex)
-                n_cluster -= 1
-    
-    return cluster
+        next_r, next_c = r + direction[0], c + direction[1]
+
+        if 0 <= next_r < grid.get_rows() and 0 <= next_c < grid.get_cols() and grid.is_free(next_r, next_c):
+            grid.add_obstacle((next_r, next_c))

@@ -39,7 +39,7 @@ def print_gui_path(path, screen, cell_size, padding_left, padding_top, color = R
         end_pixel = (starting_point + end_point[1] * cell_size + cell_size // 2, padding_top + end_point[0] * cell_size + cell_size // 2)
         pygame.draw.line(screen, color, start_pixel, end_pixel, 3)
 
-    end_point = sequence[-1]
+    end_point = sequence[len(sequence) - 1]
     end_pixel = (starting_point + end_point[1] * cell_size + cell_size // 2, padding_top + end_point[0] * cell_size + cell_size // 2)
     pygame.draw.polygon(screen, color, [(end_pixel[0], end_pixel[1] - cell_size // 3), 
                                          (end_pixel[0] + cell_size // 5, end_pixel[1] + cell_size // 5),

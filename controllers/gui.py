@@ -168,7 +168,7 @@ class Gui():
                         print_gui_paths(paths, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
-                        self.new_path = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), Path.get_goal_last_instant(), self.instance.get_max())
+                        self.new_path, _, _ = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_time_new_goal_get_passed(), self.instance.get_max())
 
                         if self.new_path:
                             print_gui_path(self.new_path, grid_surface, cell_size, PADDING_LEFT, PADDING_TOP)
