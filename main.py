@@ -23,11 +23,11 @@ def get_cli_args():
 
 def set_default_parameters():
     global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 10
-    COLS = 10
-    TRAVERSABILITY = 0.7
-    CLUSTER_FACTOR = 0.2
-    N_AGENTS = 25
+    ROWS = 20
+    COLS = 20
+    TRAVERSABILITY = 0.5
+    CLUSTER_FACTOR = 0.0
+    N_AGENTS = 3
     CELL_SIZE = 25
     USE_REACH_GOAL = False
 
@@ -39,11 +39,9 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     
     instance = instance_generator(grid, n_agents, use_reach_goal)
     
-    new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), Path.get_goal_last_instant(), instance.get_max())
+    new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_time_new_goal_get_passed(), instance.get_max())
     
-    if new_path is None:
-        print("No new path found")
-    
+    # stop screening
     profile.stop_screening()
 
     profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed)
@@ -55,8 +53,14 @@ def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size)
     gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size)
 
 def main():
+    # set the default parameters
     set_default_parameters()
 
+    # run the automated tests
+    # automated_test = Automated_test(ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, USE_REACH_GOAL)
+    # automated_test.run_tests(10, 250, 10)
+
+    # get the command line arguments
     args = get_cli_args()
     rows = args.rows or ROWS
     cols = args.cols or COLS
