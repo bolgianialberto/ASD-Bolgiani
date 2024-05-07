@@ -1,9 +1,0 @@
-1. togliere obstacles? oppure togliere vertexes
-2. i pesi vanno bene salvati così?
-3. quando clicco su generate devo eliminare gli agenti che c'erano, altrimenti da errore (FATTO)
-4. attento a fare il check solo per gli istanti in cui tutti e due sono arrivati (se un percorso è lungo 10 e l'altro 11 non devo controllare le sovrapposizioni al seconodo 11)
-5. posso eliminare agent_model in controller?
-6. inizio e fine di due agenti posso coincidere? 
-7. inizio e fine dello stesso agente possono coincidere?
-8. migliorare l'aggiunta degli n agenti con Conflict Based Search
-9. Per scegliere il prossimo vertice dei paths iniziali potrei scegliere una volta il migliore e una volta al 50% tra uno casuale e il migliore
