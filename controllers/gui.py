@@ -7,6 +7,7 @@ from views.checkbox import Checkbox
 from models.path import Path
 import pygame
 from tkinter import messagebox
+import random
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -24,7 +25,7 @@ PADDING_TOP = 40
 
 BUTTON_SURFACE_WIDTH = 200
 
-CUSTOM_FONT = 'Lato-Regular.ttf'
+CUSTOM_FONT = 'Roboto-Regular.ttf'
 
 BOX_WIDTH = 50
 BOX_HEIGHT = 20
@@ -36,7 +37,7 @@ class Gui():
         self.instance = None
         self.new_path = None
     
-    def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size):
+    def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size, seed):
         pygame.init()
 
         # display
@@ -61,29 +62,32 @@ class Gui():
         fcr_input_value = ''
         agglo_input_value = ''
         na_input_value = ''
+        seed_input_value = ''
 
         rows_active = False
         cols_active = False
         fcr_active = False
         agglo_active = False
         na_active = False
+        seed_active = False
 
         # Input boxes
         rows_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP, BOX_WIDTH, BOX_HEIGHT)
         cols_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 30, BOX_WIDTH, BOX_HEIGHT)
         fcr_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 60, BOX_WIDTH, BOX_HEIGHT)
         agglo_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 90, BOX_WIDTH, BOX_HEIGHT)
-        na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 240, BOX_WIDTH, BOX_HEIGHT)
-        checkbox_rg = Checkbox(button_surface, 140, 250, label="use reach goal")
+        seed_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 120, BOX_WIDTH, BOX_HEIGHT)
+        na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 310, BOX_WIDTH, BOX_HEIGHT)
+        checkbox_rg = Checkbox(button_surface, 140, 320, label="use reach goal")
     
         # Font
         font_button = pygame.font.Font(CUSTOM_FONT, 20)
         font_attributes = pygame.font.Font(CUSTOM_FONT, 15)
 
         # Buttons
-        generate_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 120, BUTTON_WIDTH, BUTTON_HEIGHT)
-        add_agents_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 270, BUTTON_WIDTH, BUTTON_HEIGHT)
-        add_new_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 420, BUTTON_WIDTH, BUTTON_HEIGHT)
+        generate_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 150, BUTTON_WIDTH, BUTTON_HEIGHT)
+        add_agents_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 340, BUTTON_WIDTH, BUTTON_HEIGHT)
+        add_new_button_rect = pygame.Rect(PADDING_LEFT, PADDING_TOP + 530, BUTTON_WIDTH, BUTTON_HEIGHT)
 
         draw_button(button_surface, BLUE, font_button, "Generate", generate_button_rect)
         draw_button(button_surface, BLUE, font_button, "Add Agents", add_agents_button_rect)
@@ -107,6 +111,7 @@ class Gui():
                         fcr_active = False
                         agglo_active = False
                         na_active = False
+                        seed_active = False
                     
                     if cols_input_box_rect.collidepoint(x, y):
                         cols_active = True
@@ -114,6 +119,7 @@ class Gui():
                         fcr_active = False
                         agglo_active = False
                         na_active = False
+                        seed_active = False
                     
                     if fcr_input_box_rect.collidepoint(x, y):
                         fcr_active = True
@@ -121,6 +127,7 @@ class Gui():
                         rows_active = False
                         agglo_active = False
                         na_active = False
+                        seed_active = False
 
                     if agglo_input_box_rect.collidepoint(x, y):
                         agglo_active = True
@@ -128,9 +135,19 @@ class Gui():
                         cols_active = False
                         rows_active = False
                         na_active = False
+                        seed_active = False
 
                     if na_input_box_rect.collidepoint(x, y):
                         na_active = True
+                        fcr_active = False
+                        cols_active = False
+                        rows_active = False
+                        agglo_active = False
+                        seed_active = False
+
+                    if seed_input_box_rect.collidepoint(x, y):
+                        seed_active = True
+                        na_active = False
                         fcr_active = False
                         cols_active = False
                         rows_active = False
@@ -144,7 +161,10 @@ class Gui():
                         cols_I = int(cols_input_value) if cols_input_value else cols
                         traversability_I = float(fcr_input_value) if fcr_input_value else traversability
                         cluster_factor_I = float(agglo_input_value) if agglo_input_value else cluster_factor
+                        seed_factor = int(seed_input_value) if seed_input_value else seed
 
+                        if seed_factor:
+                            random.seed(seed_factor)
 
                         if rows_I > 25 or cols_I > 28 or rows_I < 1 or cols_I < 1 or traversability_I < 0 or traversability_I > 1 or cluster_factor_I < 0 or cluster_factor_I > 1:
                             messagebox.showinfo("Attention!", "Please insert valid values: \n- rows: 1-25 \n- cols: 1-28 \n- free cell ratio: 0-1 \n- cluster factor: 0-1")
@@ -206,6 +226,12 @@ class Gui():
                             na_input_value = na_input_value[:-1]
                         else:
                             na_input_value += event.unicode
+
+                    if seed_active:
+                        if event.key == pygame.K_BACKSPACE:
+                            seed_input_value = seed_input_value[:-1]
+                        else:
+                            seed_input_value += event.unicode
             
             color = LIGHT_BLUE if rows_active else LIGHT_GREY
             draw_text("rows:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP)
@@ -224,8 +250,12 @@ class Gui():
             draw_input_box(button_surface, color, font_attributes, agglo_input_value, agglo_input_box_rect)
 
             color = LIGHT_BLUE if na_active else LIGHT_GREY
-            draw_text("n° of agents:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 240)
+            draw_text("n° of agents:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 310)
             draw_input_box(button_surface, color, font_attributes, na_input_value, na_input_box_rect)
+
+            color = LIGHT_BLUE if seed_active else LIGHT_GREY
+            draw_text("seed:", font_attributes, button_surface, PADDING_LEFT, PADDING_TOP + 120)
+            draw_input_box(button_surface, color, font_attributes, seed_input_value, seed_input_box_rect)
 
             screen.blit(button_surface, (0, 0))  # Posiziona la superficie dei bottoni a sinistra
             screen.blit(grid_surface, (BUTTON_SURFACE_WIDTH, 0))

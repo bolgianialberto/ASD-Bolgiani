@@ -3,7 +3,7 @@ import pygame
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-CUSTOM_FONT = 'Lato-Regular.ttf'
+CUSTOM_FONT = 'Roboto-Regular.ttf'
 
 WIDTH, HEIGHT = 400, 200
 

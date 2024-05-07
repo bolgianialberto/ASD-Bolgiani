@@ -27,7 +27,6 @@ class Profile():
     
     def stop_screening(self):
         self.total_time = time.time() - self.start_time
-        
         mem = tracemalloc.get_traced_memory()
         tracemalloc.stop()
         self.peak_memory = mem[1]/1024/1024

@@ -1,10 +1,10 @@
 from controllers.gui import Gui
-from models.path import Path
 from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
 from algorithm.reach_goal import reach_goal
 from controllers.profile_generator import Profile
 import argparse
+import random
 
 # TODO: wait
 # TODO: sperimentazioni con for 
@@ -18,29 +18,45 @@ def get_cli_args():
     parser.add_argument("--cf", type=float, help="cluster factor")
     parser.add_argument("--na", type=int, help="number of agents")
     parser.add_argument("--rg", action='store_true', help="use reach goal for initial paths")
+    parser.add_argument("--seed", type=int, help="set seed for random number generator")
 
     return parser.parse_args()
 
 def set_default_parameters():
-    global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL
-    ROWS = 20
-    COLS = 20
-    TRAVERSABILITY = 0.5
-    CLUSTER_FACTOR = 0.0
-    N_AGENTS = 3
+    global ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, CELL_SIZE, USE_REACH_GOAL, SEED
+    ROWS = 24
+    COLS = 28
+    TRAVERSABILITY = 0.7
+    CLUSTER_FACTOR = 0.2
+    N_AGENTS = 10
     CELL_SIZE = 25
     USE_REACH_GOAL = False
+    SEED = None
 
-def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal):
-    profile = Profile()
+def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal, seed):
+    if seed:
+        random.seed(seed)
+
+    profile = Profile() # create a profile object to profile the execution time and memory usage of the algorithm
+    # profile_grid_generator = Profile() # create a profile object to profile the grid generation
+    # profile_instance_generator = Profile() # create a profile object to profile the instance generation
+    # profile_path_generator = Profile() # create a profile object to profile the path generation
+
+    # start screening
     profile.start_screening()
 
+    # profile_grid_generator.start_screening()
     grid = grid_generator(rows, cols, traversability, cluster_factor)
+    # profile_grid_generator.stop_screening()
     
+    # profile_instance_generator.start_screening()
     instance = instance_generator(grid, n_agents, use_reach_goal)
-    
+    # profile_instance_generator.stop_screening()
+
+    # profile_path_generator.start_screening()
     new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_time_new_goal_get_passed(), instance.get_max())
-    
+    # profile_path_generator.stop_screening()
+
     # stop screening
     profile.stop_screening()
 
@@ -48,9 +64,9 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
 
     profile.print_profile()
 
-def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size):
+def gui_command(rows, cols, traversability, cluster_factor, n_agents, cell_size, seed):
     gui = Gui()
-    gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size)
+    gui.run(rows, cols, traversability, cluster_factor, n_agents, cell_size, seed)
 
 def main():
     # set the default parameters
@@ -68,11 +84,12 @@ def main():
     cluster_factor = args.cf or CLUSTER_FACTOR
     n_agents = args.na or N_AGENTS
     use_reach_goal = args.rg or USE_REACH_GOAL
+    seed = args.seed or SEED
         
     if args.mode == 'gui':
-        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE)
+        gui_command(rows, cols, traversability, cluster_factor, n_agents, CELL_SIZE, seed)
     else:
-        cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal)
+        cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal, seed)
     
 if __name__ == "__main__":
     main()
