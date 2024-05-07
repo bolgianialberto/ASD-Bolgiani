@@ -58,12 +58,12 @@ class Gui():
         generate_button_clicked = False
         add_agents_button_clicked = False
 
-        rows_input_value = ''
-        cols_input_value = ''
-        fcr_input_value = ''
-        agglo_input_value = ''
-        na_input_value = ''
-        seed_input_value = ''
+        rows_input_value = str(rows)
+        cols_input_value = str(cols)
+        fcr_input_value = str(traversability)
+        agglo_input_value = str(cluster_factor)
+        na_input_value = str(n_agents)
+        seed_input_value = '' if not seed else str(seed)
 
         rows_active = False
         cols_active = False
@@ -175,8 +175,8 @@ class Gui():
                         if seed_factor:
                             random.seed(seed_factor)
 
-                        if rows_I > 24 or cols_I > 28 or rows_I < 1 or cols_I < 1 or traversability_I < 0 or traversability_I > 1 or cluster_factor_I < 0 or cluster_factor_I > 1:
-                            messagebox.showinfo("Attention!", "Please insert valid values: \n- rows: 1-24 \n- cols: 1-28 \n- free cell ratio: 0-1 \n- cluster factor: 0-1")
+                        if rows_I > 25 or cols_I > 28 or rows_I < 1 or cols_I < 1 or traversability_I < 0 or traversability_I > 1 or cluster_factor_I < 0 or cluster_factor_I > 1:
+                            messagebox.showinfo("Attention!", "Please insert valid values: \n- rows: 1-25 \n- cols: 1-28 \n- free cell ratio: 0-1 \n- cluster factor: 0-1")
                             continue
                         else:
                             self.profile.start_screening()
@@ -224,7 +224,7 @@ class Gui():
                         else:
                             messagebox.showinfo("Error", "Impossible to find a path!")
                         
-                        self.profile.print_profile()
+                        self.profile.print_results_on_file()
                         
                     
                 if event.type == pygame.KEYDOWN:

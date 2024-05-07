@@ -46,12 +46,6 @@ def set_parameters_from_file():
         USE_REACH_GOAL = data['use_reach_goal']
         SEED = data['seed']
 
-def print_results_on_file(profile):
-    output_file = 'results.txt'
-    
-    with open(output_file, 'w') as f:
-        f.write(profile.get_profile_string())
-
 def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_goal, seed):
     if seed:
         random.seed(seed)
@@ -81,7 +75,7 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
 
     profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed, seed)
 
-    print_results_on_file(profile)
+    profile.print_results_on_file()
     # profile.print_profile()
 
 def gui_command(rows, cols, traversability, cluster_factor, n_agents, seed):

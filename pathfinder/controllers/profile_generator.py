@@ -103,6 +103,12 @@ class Profile():
                 wait_counter += 1
         return wait_counter
 
+    def print_results_on_file(self):
+        output_file = 'results.txt'
+        
+        with open(output_file, 'w') as f:
+            f.write(self.get_profile_string())
+
     def print_profile(self):
         print("PARAMETERS:")
         print(f"rows: {self.rows}")
@@ -207,4 +213,6 @@ class Profile():
         result += f"total memory: {self.peak_memory} MB\n"
 
         return result
+
+
     
