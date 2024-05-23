@@ -8,7 +8,7 @@ def check_reachability(islands, initial, goal):
     return True
 
 def find_islands(graph, grid):
-    linked_vertexes = graph.get_linked_vertexes()
+    linked_verteces = graph.get_linked_verteces()
     rows = grid.get_rows()
     cols = grid.get_cols()
 
@@ -25,7 +25,7 @@ def find_islands(graph, grid):
                         continue
                     visited.add((node_r, node_c))
                     island.add((node_r, node_c))
-                    for neighbor in linked_vertexes[(node_r, node_c)]:
+                    for neighbor in linked_verteces[(node_r, node_c)]:
                         queue.append(neighbor[0])
                 islands.append(island)
     return islands

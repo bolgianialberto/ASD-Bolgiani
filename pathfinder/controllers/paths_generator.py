@@ -16,19 +16,21 @@ def create_random_initial_paths(goals_init_last_instant, graph, grid, time_limit
             t = 1
 
             while current != goal:
-                # TODO: cambia time_limit in base alla dimensione
                 if t > time_limit:
                     path.set_goal(current)
                     goals_init_last_instant[init] = (current, t-1)
                     break
                 
                 available_moves = graph.get_neighbors(current)
+                available_moves = Path.remove_unreachable_moves(current, available_moves, paths, t)
 
-                Path.remove_unreachable_moves(current, available_moves, paths, t)
-
+                if not available_moves:
+                    path.set_goal(current)
+                    goals_init_last_instant[init] = (current, t-1)
+                    break
+                
                 next, weight = random.choice(available_moves)
 
-                # TODO: cambia goals_init_last_instant[goal] ci va messo init credo
                 if next != goal or goals_init_last_instant[init][1] < t:
                     path.add_node(t, next, weight)
                     current = next

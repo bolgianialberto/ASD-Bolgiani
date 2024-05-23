@@ -38,7 +38,7 @@ class Gui():
         self.new_path = None
         self.profile = Profile()
     
-    def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size, seed):
+    def run(self, rows, cols, traversability, cluster_factor, n_agents, cell_size, seed, use_reach_goal):
         pygame.init()
 
         # display
@@ -79,7 +79,7 @@ class Gui():
         agglo_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 90, BOX_WIDTH, BOX_HEIGHT)
         seed_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 120, BOX_WIDTH, BOX_HEIGHT)
         na_input_box_rect = pygame.Rect(PADDING_LEFT + 100, PADDING_TOP + 310, BOX_WIDTH, BOX_HEIGHT)
-        checkbox_rg = Checkbox(button_surface, 140, 320, label="use reach goal")
+        checkbox_rg = Checkbox(button_surface, 140, 320, use_reach_goal, label="use reach goal")
     
         # Font
         font_button = pygame.font.Font(CUSTOM_FONT, 20)
@@ -210,7 +210,7 @@ class Gui():
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
                         self.profile.start_screening()
-                        self.new_path, nodeDict, closed = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_time_new_goal_get_passed(), self.instance.get_max())
+                        self.new_path, nodeDict, closed = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_last_time_goal_passed(), self.instance.get_max())
                         self.profile.stop_screening("path")
 
                         # set profile parameters

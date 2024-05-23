@@ -76,25 +76,28 @@ class Profile():
             self.wait_counter = self.count_wait_moves(self.new_path)
 
     def start_screening(self):
-        self.start_time = time.time()
+        self.start_time = time.perf_counter()
         tracemalloc.start()
     
     def stop_screening(self, mode="normal"):
+        end_time = time.perf_counter()
+        elapsed_time = end_time - self.start_time
+
         mem = tracemalloc.get_traced_memory()
         tracemalloc.stop()
 
         if mode == "normal":
             self.peak_memory = mem[1]/1024/1024
-            self.total_time = time.time() - self.start_time
+            self.total_time = elapsed_time
         if mode == "grid":
             self.peak_memory_grid = mem[1]/1024/1024
-            self.total_grid_time = time.time() - self.start_time
+            self.total_grid_time = elapsed_time
         if mode == "instance":
             self.peak_memory_instance = mem[1]/1024/1024
-            self.total_instance_time = time.time() - self.start_time
+            self.total_instance_time = elapsed_time
         if mode == "path":
             self.peak_memory_path = mem[1]/1024/1024
-            self.total_path_time = time.time() - self.start_time
+            self.total_path_time = elapsed_time
 
     def count_wait_moves(self, path):
         wait_counter = 0
@@ -124,7 +127,7 @@ class Profile():
         print(f"agents' max length: {self.instance.get_time_limit_agents()}")
 
         for i, path in enumerate(self.instance.get_paths()):
-            print(f"length agent {i+1}:" , len(path.get_sequence()))
+            print(f"Path {i+1}: sequence: {path.get_sequence()}, length: {len(path.get_sequence())}, weight: {path.get_weight()}")
             
         print()
 
@@ -150,22 +153,28 @@ class Profile():
             self.print_memory()
             print()
     
-        if self.peak_memory_grid:
+        elif self.peak_memory_grid:
             print("TIME AND MEMORY GRID GENERATION:")
             print(f"grid generation time: {self.total_grid_time} seconds")
             print(f"grid generation memory: {self.peak_memory_grid} MB")
             print()
         
-        if self.peak_memory_instance:
+        elif self.peak_memory_instance:
             print("TIME AND MEMORY INSTANCE GENERATION:")
             print(f"instance generation time: {self.total_instance_time} seconds")
             print(f"instance generation memory: {self.peak_memory_instance} MB")
             print()
         
-        if self.peak_memory_path:
+        elif self.peak_memory_path:
             print("TIME AND MEMORY PATH GENERATION:")
             print(f"path generation time: {self.total_path_time} seconds")
             print(f"path generation memory: {self.peak_memory_path} MB")
+            print()
+
+        elif self.peak_memory:
+            print("TIME AND MEMORY:")
+            self.print_time()
+            self.print_memory()
             print()
 
     def print_time(self):

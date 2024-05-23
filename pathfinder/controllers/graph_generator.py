@@ -11,11 +11,11 @@ diagonal_weight = Path.get_diagonal_weight()
 def graph_generator(grid):
     graph = Graph()
 
-    add_linked_vertexes(graph, grid)
+    add_linked_verteces(graph, grid)
 
     return graph
 
-def add_linked_vertexes(graph, grid):
+def add_linked_verteces(graph, grid):
     rows = grid.rows
     cols = grid.cols
 

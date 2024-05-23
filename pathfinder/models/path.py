@@ -54,15 +54,20 @@ class Path:
     def is_move_good(current, next, paths, t):
         for path in paths:
             ended = not path.is_path_ended(t)
-            if (ended and current == path.get_goal()) or (not ended and not path.is_collision_free(current, next, t)):
+            if (ended and next == path.get_goal()) or (not ended and not path.is_collision_free(current, next, t)):
                 return False
         
         return True
 
     @staticmethod
     def remove_unreachable_moves(current, available_moves, paths, t):
-        # available_moves è un set di vicini di un nodo
-        available_moves = [next for next in available_moves if Path.is_move_good(current, next, paths, t)]
+        reachable_moves = []
+
+        for next, weight in available_moves:
+            if Path.is_move_good(current, next, paths, t):
+                reachable_moves.append((next, weight))
+
+        return reachable_moves
 
     @staticmethod
     def get_nsew_moves():

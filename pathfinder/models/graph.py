@@ -2,20 +2,20 @@ from collections import defaultdict
 
 class Graph:
     def __init__(self):
-        self.linked_vertexes = defaultdict(list)
+        self.linked_verteces = defaultdict(list)
 
     def add_linked_vertex(self, vertex, neighbor, weight):
-        self.linked_vertexes[vertex].append((neighbor, weight))
+        self.linked_verteces[vertex].append((neighbor, weight))
     
-    def get_linked_vertexes(self):
-        return self.linked_vertexes
+    def get_linked_verteces(self):
+        return self.linked_verteces
     
     def get_neighbors(self, vertex):
-        return self.linked_vertexes[vertex]
+        return self.linked_verteces[vertex]
     
     def __str__(self):
         res = "Graph\n"
-        for vertex in self.linked_vertexes:
-            res += str(vertex) + " -> " + str(self.linked_vertexes[vertex]) + "\n"
+        for vertex in self.linked_verteces:
+            res += str(vertex) + " -> " + str(self.linked_verteces[vertex]) + "\n"
         return res
     

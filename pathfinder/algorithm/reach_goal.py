@@ -7,7 +7,7 @@ from models.path import Path
 def compute_h(v, goal):
     return diagonal_distance(v, goal)
 
-def reach_goal(graph, init, goal, paths, time_new_goal_get_passed, time_limit):
+def reach_goal(graph, init, goal, paths, last_time_goal_passed, time_limit):
     open_heap = []
     open_set = set()
 
@@ -29,16 +29,16 @@ def reach_goal(graph, init, goal, paths, time_new_goal_get_passed, time_limit):
        
         closed.add((v, t))
 
-        if v == goal and t > time_new_goal_get_passed:
+        if v == goal and t > last_time_goal_passed:
             goal_node = current_node
             p = reconstruct_path(init, goal_node, t)
             return p, nodeDict, closed
         
         if t < time_limit:
             available_moves = graph.get_neighbors(v)
-            Path.remove_unreachable_moves(v, available_moves, paths, t)
+            moves = Path.remove_unreachable_moves(v, available_moves, paths, t+1)
 
-            for neighbor, weight in available_moves:
+            for neighbor, weight in moves:
                 if (neighbor, t+1) not in closed:
                     neighbor_node = nodeDict.get((neighbor, t+1))
 
