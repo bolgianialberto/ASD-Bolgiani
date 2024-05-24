@@ -76,7 +76,7 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed, seed)
 
     profile.print_results_on_file()
-    # profile.print_profile()
+    profile.print_profile()
         
 
 def gui_command(rows, cols, traversability, cluster_factor, n_agents, seed, use_reach_goal):
