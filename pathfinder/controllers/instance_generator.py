@@ -31,29 +31,36 @@ def create_inits_goals(graph, n_agents):
         goal = random.choice(verteces)
         while goal == init or goal in assigned_goals:
             goal = random.choice(verteces)
-        goals_init_last_instant[init] = (goal, -1)
+        goals_init_last_instant[goal] = (init, -1)
         assigned_goals.add(goal)
     
     return goals_init_last_instant
 
 def instance_generator(grid, n_agents, use_reach_goal):
+    print("inizio instance generator")
     # Create a graph
     graph = graph_generator(grid)
-    
+
     goals_init_last_instant = create_inits_goals(graph, n_agents)
-    
+    last_key = list(goals_init_last_instant.keys())[-1]
+    print("prima goals_init_last_instant", goals_init_last_instant)
+
     # Create a set of paths
     time_limit = time_limit_generator(grid)
     paths = initial_paths_generator(graph, grid, goals_init_last_instant, time_limit, use_reach_goal)
-    
+
+    print("dopo goals_init_last_instant", goals_init_last_instant)
+
     # Get the initial and goal verteces
-    init, (goal, last_time_goal_passed) = goals_init_last_instant.popitem()
+    # goal, (init, last_time_goal_passed) = goals_init_last_instant.popitem()
 
     # Compute max
     max = max_generator(grid, paths)
 
+    goal, (init, _) = last_key, goals_init_last_instant[last_key]
+
     # Create an instance
-    instance = Instance(grid, graph, paths, init, goal, max, last_time_goal_passed, time_limit)
+    instance = Instance(grid, graph, paths, init, goal, max, goals_init_last_instant, time_limit)
 
     return instance
 

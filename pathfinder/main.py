@@ -67,7 +67,7 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     # profile_instance_generator.stop_screening()
 
     # profile_path_generator.start_screening()
-    new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_last_time_goal_passed(), instance.get_max())
+    new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_goals_init_last_instant(), instance.get_max())
     # profile_path_generator.stop_screening()
 
     # stop screening
@@ -76,7 +76,7 @@ def cli_command(rows, cols, traversability, cluster_factor, n_agents, use_reach_
     profile.set_values(rows, cols, traversability, cluster_factor, use_reach_goal, instance, new_path, nodeDict, closed, seed)
 
     profile.print_results_on_file()
-    profile.print_profile()
+    # profile.print_profile()
         
 
 def gui_command(rows, cols, traversability, cluster_factor, n_agents, seed, use_reach_goal):

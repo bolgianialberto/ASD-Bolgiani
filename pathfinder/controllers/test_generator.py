@@ -26,7 +26,7 @@ class Automated_test:
             
             instance = instance_generator(grid, self.n_agents, self.use_reach_goal)
             
-            new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), Path.get_goal_last_instant(), instance.get_max())
+            new_path, nodeDict, closed = reach_goal(instance.get_graph(), instance.get_init(), instance.get_goal(), instance.get_paths(), instance.get_goals_init_last_instant(), instance.get_max())
             
             if new_path is None:
                 print("No new path found")

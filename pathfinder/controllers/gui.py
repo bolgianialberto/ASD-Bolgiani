@@ -210,7 +210,7 @@ class Gui():
 
                     if add_new_button_rect.collidepoint(x, y) and add_agents_button_clicked:
                         self.profile.start_screening()
-                        self.new_path, nodeDict, closed = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_last_time_goal_passed(), self.instance.get_max())
+                        self.new_path, nodeDict, closed = reach_goal(self.instance.get_graph(), self.instance.get_init(), self.instance.get_goal(), self.instance.get_paths(), self.instance.get_goals_init_last_instant(), self.instance.get_max())
                         self.profile.stop_screening("path")
 
                         # set profile parameters
