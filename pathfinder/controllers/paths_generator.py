@@ -11,12 +11,10 @@ def create_random_initial_paths(goals_init_last_instant, graph, grid, time_limit
     keys = list(goals_init_last_instant.keys())[:-1]
 
     for key in keys:
-        print("key: ", key)
         goal, (init, _) = key, goals_init_last_instant[key]
         found = False # flag per capire se ho trovato il goal originale
 
         if check_reachability(islands, init, goal):
-            print("reachability ok")
             path = Path(init, goal)
             current = init
             path.add_node(0, current)

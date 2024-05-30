@@ -6,7 +6,6 @@ from models.path import Path
 nsew_directions = Path.get_nsew_moves()
 
 def grid_generator(rows, cols, traversability, cluster_factor):
-    print("inizio grid generator")
     grid = Grid(rows, cols)
 
     add_obstacles(grid, traversability, cluster_factor)
@@ -25,7 +24,6 @@ def add_obstacles(grid, traversability, cluster_factor):
         grid.add_random_obstacles(n_obstacles - n_cluster)
 
 def add_cluster(grid, n_cluster):
-    print("inizio add_cluster")
     initial_r = random.randint(0, grid.get_rows() - 1)
     initial_c = random.randint(0, grid.get_cols() - 1)
 

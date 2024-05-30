@@ -126,8 +126,8 @@ class Profile():
         print(f"agents' number: {len(self.instance.get_paths())}")
         print(f"agents' max length: {self.instance.get_time_limit_agents()}")
 
-        for i, path in enumerate(self.instance.get_paths()):
-            print(f"Path {i+1}: sequence: {path.get_sequence()}, length: {len(path.get_sequence())}, weight: {path.get_weight()}")
+        # for i, path in enumerate(self.instance.get_paths()):
+        #     print(f"Path {i+1}: sequence: {path.get_sequence()}, length: {len(path.get_sequence())}, weight: {path.get_weight()}")
             
         print()
 

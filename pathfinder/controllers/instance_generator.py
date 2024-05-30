@@ -37,19 +37,15 @@ def create_inits_goals(graph, n_agents):
     return goals_init_last_instant
 
 def instance_generator(grid, n_agents, use_reach_goal):
-    print("inizio instance generator")
     # Create a graph
     graph = graph_generator(grid)
 
     goals_init_last_instant = create_inits_goals(graph, n_agents)
     last_key = list(goals_init_last_instant.keys())[-1]
-    print("prima goals_init_last_instant", goals_init_last_instant)
 
     # Create a set of paths
     time_limit = time_limit_generator(grid)
     paths = initial_paths_generator(graph, grid, goals_init_last_instant, time_limit, use_reach_goal)
-
-    print("dopo goals_init_last_instant", goals_init_last_instant)
 
     # Get the initial and goal verteces
     # goal, (init, last_time_goal_passed) = goals_init_last_instant.popitem()

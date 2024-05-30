@@ -163,6 +163,7 @@ class Gui():
                         traversability_I = float(fcr_input_value) if fcr_input_value else traversability
                         cluster_factor_I = float(agglo_input_value) if agglo_input_value else cluster_factor
                         seed_factor = int(seed_input_value) if seed_input_value else seed
+                        if seed_input_value == '': seed_factor = None
 
                         # set profile parameters
                         self.profile.set_rows(rows_I)

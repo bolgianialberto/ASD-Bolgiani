@@ -8,8 +8,6 @@ def compute_h(v, goal):
     return diagonal_distance(v, goal)
 
 def reach_goal(graph, init, goal, paths, goals_init_last_instant, time_limit):
-    print("inizio reachgoal")
-    print(f"Path: {init} -> {goal}")
     _, last_time_goal_passed = goals_init_last_instant[goal]
 
     open_heap = []

@@ -2,10 +2,10 @@ from collections import defaultdict
 
 class Graph:
     def __init__(self):
-        self.linked_verteces = defaultdict(list)
+        self.linked_verteces = defaultdict(set)
 
     def add_linked_vertex(self, vertex, neighbor, weight):
-        self.linked_verteces[vertex].append((neighbor, weight))
+        self.linked_verteces[vertex].add((neighbor, weight))
     
     def get_linked_verteces(self):
         return self.linked_verteces

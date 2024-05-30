@@ -34,7 +34,6 @@ class Grid:
         self.obstacles = obstacles
     
     def add_random_obstacles(self, n_obstacles):
-        print("inizio add_random_obstacles")
         for i in range(n_obstacles):
             r = random.randint(0, self.rows - 1)
             c = random.randint(0, self.cols - 1)

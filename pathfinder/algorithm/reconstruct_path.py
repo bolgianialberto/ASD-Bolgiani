@@ -1,7 +1,6 @@
 from models.path import Path
 
 def reconstruct_path(init, goal_node, t_end, goals_init_last_instant):
-    print("inizio reconstruct_path")
     result_path = Path(init, goal_node.vertex)
     result_path.set_weight(goal_node.get_g())
 
