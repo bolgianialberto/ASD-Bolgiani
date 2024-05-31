@@ -44,8 +44,6 @@ class Grid:
 
             self.add_obstacle((r, c))
     
-
-    # TODO: togli questi due
     def create_grid_representation(self):
         grid = []
         for i in range(self.rows):

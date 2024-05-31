@@ -48,7 +48,7 @@ def reach_goal(graph, init, goal, paths, goals_init_last_instant, time_limit):
                         neighbor_node = Node(neighbor, t+1, None, 0, 0)
                         nodeDict[(neighbor, t+1)] = neighbor_node   
 
-                    if current_node.g + weight < nodeDict[(neighbor, t+1)].get_g():
+                    if current_node.g + weight < neighbor_node.get_g():
                         neighbor_node.set_g(current_node.g + weight)
                         neighbor_node.set_h(compute_h(neighbor, goal))
                         neighbor_node.set_f(neighbor_node.get_g() + neighbor_node.get_h())

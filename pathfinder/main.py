@@ -7,9 +7,6 @@ import argparse
 import random
 import json
 
-# TODO: wait
-# TODO: sperimentazioni con for 
-
 def get_cli_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", help="Mode can be 'cli' or 'gui'", nargs='?', default='cli')

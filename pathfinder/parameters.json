@@ -1,6 +1,6 @@
 {
-    "rows": 250,
-    "cols": 280,
+    "rows": 25,
+    "cols": 28,
     "traversability": 0.8,
     "cluster_factor": 0.3,
     "n_agents": 10,
