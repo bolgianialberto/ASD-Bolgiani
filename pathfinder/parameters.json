@@ -1,9 +1,9 @@
 {
     "rows": 25,
     "cols": 28,
-    "traversability": 0.7,
+    "traversability": 0.8,
     "cluster_factor": 0.3,
     "n_agents": 10,
-    "use_reach_goal": false,
+    "use_reach_goal": true,
     "seed": null
 }
