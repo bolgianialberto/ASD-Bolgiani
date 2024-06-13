@@ -1,13 +1,13 @@
 class Instance:
     
-    def __init__(self, grid, graph, paths, init, goal, max, time_new_goal_get_passed, time_limit_agents):
+    def __init__(self, grid, graph, paths, init, goal, max, goals_init_last_instant, time_limit_agents):
         self.grid = grid
         self.graph = graph
         self.paths = paths
         self.init = init
         self.goal = goal
         self.max = max
-        self.time_new_goal_get_passed = time_new_goal_get_passed
+        self.goals_init_last_instant = goals_init_last_instant
         self.time_limit_agents = time_limit_agents+1
     
     def get_time_limit_agents(self):
@@ -31,8 +31,8 @@ class Instance:
     def get_max(self):
         return self.max
     
-    def get_time_new_goal_get_passed(self):
-        return self.time_new_goal_get_passed
+    def get_goals_init_last_instant(self):
+        return self.goals_init_last_instant
 
     def print_instance(self):
         print("Instance")

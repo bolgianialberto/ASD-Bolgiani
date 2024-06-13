@@ -8,10 +8,10 @@ CUSTOM_FONT = 'Roboto-Regular.ttf'
 WIDTH, HEIGHT = 400, 200
 
 class Checkbox:
-    def __init__(self, screen, x, y, width=20, height=20, label=''):
+    def __init__(self, screen, x, y, checked, width=20, height=20, label=''):
         self.screen = screen
         self.rect = pygame.Rect(x, y, width, height)
-        self.checked = False
+        self.checked = checked
         self.label = label
         self.font = pygame.font.Font(CUSTOM_FONT, 15)
 
@@ -34,3 +34,6 @@ class Checkbox:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.checked = not self.checked
+
+    def setChecked(self, value):
+        self.checked = value
