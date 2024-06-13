@@ -87,16 +87,16 @@ class Profile():
         tracemalloc.stop()
 
         if mode == "normal":
-            self.peak_memory = mem[1]/1024/1024
+            self.peak_memory = mem[1]/1024
             self.total_time = elapsed_time
         if mode == "grid":
-            self.peak_memory_grid = mem[1]/1024/1024
+            self.peak_memory_grid = mem[1]/1024
             self.total_grid_time = elapsed_time
         if mode == "instance":
-            self.peak_memory_instance = mem[1]/1024/1024
+            self.peak_memory_instance = mem[1]/1024
             self.total_instance_time = elapsed_time
         if mode == "path":
-            self.peak_memory_path = mem[1]/1024/1024
+            self.peak_memory_path = mem[1]/1024
             self.total_path_time = elapsed_time
 
     def count_wait_moves(self, path):

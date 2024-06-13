@@ -1,33 +1,32 @@
 PARAMETERS:
 rows: 25
 cols: 28
-free cell ratio: 0.8
+free cell ratio: 0.7
 cluster factor: 0.3
 
-seed: 23
+seed: 1
 
 INSTANCE:
 agents use reach goal: True
-agents' number: 6
+agents' number: 5
 agents' max length: 14
-length agent 1: 8
-length agent 2: 13
-length agent 3: 9
-length agent 4: 9
-length agent 5: 9
-length agent 6: 12
+length agent 1: 11
+length agent 2: 7
+length agent 3: 13
+length agent 4: 12
+length agent 5: 4
 
 NEW PATH:
-Init: (14, 11)
-Goal: (9, 20)
-Weight: 11.071067811865476
+Init: (5, 2)
+Goal: (22, 22)
+Weight: 28.213203435596434
 Max lenght: 39
-Lenght: 10
-Open lenght: 115
-Closed lenght: 24
-Wait moves: 0
-Sequence: {9: (9, 20), 8: (9, 19), 7: (9, 18), 6: (9, 17), 5: (9, 16), 4: (10, 15), 3: (11, 14), 2: (12, 13), 1: (13, 12), 0: (14, 11)}
+Lenght: 23
+Open lenght: 411
+Closed lenght: 147
+Wait moves: None
+Sequence: {22: (22, 22), 21: (21, 22), 20: (20, 21), 19: (20, 20), 18: (19, 19), 17: (18, 18), 16: (17, 17), 15: (17, 16), 14: (16, 15), 13: (15, 14), 12: (15, 13), 11: (14, 12), 10: (13, 11), 9: (13, 10), 8: (13, 9), 7: (12, 8), 6: (11, 7), 5: (10, 6), 4: (9, 5), 3: (8, 4), 2: (7, 3), 1: (6, 2), 0: (5, 2)}
 
 TIME AND MEMORY:
-total time: 0.039578899974003434 seconds
-total memory: 0.9790277481079102 MB
+total time: None seconds
+total memory: None MB

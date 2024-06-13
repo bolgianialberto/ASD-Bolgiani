@@ -2,6 +2,7 @@ from controllers.gui import Gui
 from controllers.instance_generator import instance_generator
 from controllers.grid_generator import grid_generator
 from algorithm.reach_goal import reach_goal
+from controllers.test_generator import Automated_test
 from controllers.profile_generator import Profile
 import argparse
 import random
@@ -88,7 +89,9 @@ def main():
 
     # run the automated tests
     # automated_test = Automated_test(ROWS, COLS, TRAVERSABILITY, CLUSTER_FACTOR, N_AGENTS, USE_REACH_GOAL)
-    # automated_test.run_tests(10, 250, 10)
+    # automated_test.test_grid_generator(10, 250, 30, 0.2, 1.0, 0.2, 0.2, 0.8, 0.2)
+    # automated_test.test_instance_generator(10, 250, 30, 10, 100, 10)
+    # automated_test.test_reach_goal(10, 250, 30, 10, 100, 10)
 
     # get the command line arguments
     args = get_cli_args()
